@@ -1,4 +1,9 @@
-var CACHE = "andrejka-v1";
+/* Andrejka - service worker
+   Stranka se bere prednostne ze site, takze nova verze naskoci hned.
+   Ostatni soubory jdou hned z cache a na pozadi se obnovi.
+   Bez site funguje vsechno z cache. */
+
+var CACHE = "andrejka-v2";
 var FILES = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function (e) {
@@ -13,15 +18,45 @@ self.addEventListener("activate", function (e) {
   }).then(function () { return self.clients.claim(); }));
 });
 
+function keepAlive(e, p) {
+  try { e.waitUntil(p); } catch (err) { /* event uz je vyrizeny - nevadi */ }
+}
+
 self.addEventListener("fetch", function (e) {
-  if (e.request.method !== "GET") { return; }
+  var req = e.request;
+  if (req.method !== "GET") { return; }
+  if (new URL(req.url).origin !== self.location.origin) { return; }
+
+  var isPage = req.mode === "navigate" || /\.html(\?|$)/.test(req.url);
+
+  if (isPage) {
+    /* stranka: nejdriv sit, pri vypadku cache */
+    e.respondWith(
+      caches.open(CACHE).then(function (c) {
+        return fetch(req).then(function (res) {
+          if (res && res.ok) { c.put(req, res.clone()); }
+          return res;
+        }).catch(function () {
+          return c.match(req).then(function (hit) {
+            return hit || c.match("./index.html") || c.match("./");
+          });
+        });
+      })
+    );
+    return;
+  }
+
+  /* ostatni soubory: hned z cache, novou verzi stahnout na pozadi */
   e.respondWith(
-    caches.match(e.request).then(function (hit) {
-      return hit || fetch(e.request).then(function (res) {
-        var copy = res.clone();
-        caches.open(CACHE).then(function (c) { c.put(e.request, copy); });
-        return res;
-      }).catch(function () { return caches.match("./index.html"); });
+    caches.open(CACHE).then(function (c) {
+      return c.match(req).then(function (hit) {
+        var net = fetch(req).then(function (res) {
+          if (res && res.ok) { c.put(req, res.clone()); }
+          return res;
+        }).catch(function () { return hit; });
+        if (hit) { keepAlive(e, net); return hit; }
+        return net;
+      });
     })
   );
 });
