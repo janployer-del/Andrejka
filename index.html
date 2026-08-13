@@ -1,0 +1,404 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no">
+<title>Andrejka</title>
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0F1D21">
+<link rel="apple-touch-icon" href="icon-192.png">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Andrejka">
+<style>
+  :root{
+    --ink:#0F1D21; --mist:#172A30; --line:#24404766;
+    --bone:#F2EDE3; --dim:#9FB3B0;
+    --dawn:#F5A83C; --moss:#7FA98B; --ember:#C9553D;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{height:100%}
+  body{background:var(--ink);color:var(--bone);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,sans-serif;overflow-x:hidden}
+  .screen{min-height:100dvh;display:flex;flex-direction:column;
+    padding:calc(20px + env(safe-area-inset-top)) 18px calc(20px + env(safe-area-inset-bottom));
+    max-width:520px;margin:0 auto}
+  .hidden{display:none!important}
+  .eyebrow{font-size:11px;letter-spacing:.22em;text-transform:uppercase;color:var(--dim)}
+  .digits{font-family:ui-monospace,"SF Mono",Menlo,Consolas,monospace;font-variant-numeric:tabular-nums}
+
+  .home-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:26px}
+  .home-head h1{font-size:17px;font-weight:600;letter-spacing:.02em}
+  .today{margin:6px 0 22px}
+  .today .state{font-size:26px;font-weight:700;line-height:1.2}
+  .today .state.done{color:var(--moss)}
+  .today .state.todo{color:var(--dawn)}
+  .stats{display:grid;grid-template-columns:1fr 1fr 1fr;gap:10px;margin-bottom:22px}
+  .stat{background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:14px 12px}
+  .stat .num{font-size:30px;font-weight:700}
+  .stat .lbl{font-size:11px;color:var(--dim);margin-top:4px;letter-spacing:.06em;text-transform:uppercase}
+  .startbtn{display:block;width:100%;border:none;border-radius:18px;cursor:pointer;
+    background:var(--dawn);color:#231604;font-size:22px;font-weight:700;padding:22px;margin:4px 0 8px}
+  .startbtn:active{transform:scale(.985)}
+  .ghost{background:transparent;border:none;color:var(--dim);font-size:15px;text-decoration:underline;cursor:pointer}
+  .ghostrow{display:block;width:100%;margin:0 0 22px;padding:8px}
+  .target-row{display:flex;align-items:center;justify-content:space-between;background:var(--mist);
+    border:1px solid var(--line);border-radius:14px;padding:12px 14px;margin-bottom:22px}
+  .target-row .lbl{font-size:13px;color:var(--dim)}
+  .target-ctl{display:flex;align-items:center;gap:14px}
+  .target-ctl button{width:40px;height:40px;border-radius:12px;border:1px solid var(--line);
+    background:transparent;color:var(--bone);font-size:20px;cursor:pointer}
+  .target-ctl .val{font-size:19px;font-weight:700;min-width:44px;text-align:center}
+  .chart-card{background:var(--mist);border:1px solid var(--line);border-radius:14px;padding:14px}
+  .chart-card h2{font-size:12px;color:var(--dim);letter-spacing:.14em;text-transform:uppercase;font-weight:600;margin-bottom:10px}
+  .chart-empty{font-size:13px;color:var(--dim);padding:14px 0}
+  .routine{margin-top:22px;font-size:13px;color:var(--dim);line-height:1.7}
+  .routine b{color:var(--bone);font-weight:600}
+  .toolbar{margin-top:18px;display:flex;gap:10px;justify-content:center;flex-wrap:wrap}
+  .toolbar button{background:transparent;border:1px solid var(--line);color:var(--dim);
+    border-radius:12px;padding:10px 14px;font-size:13px;cursor:pointer}
+  .note{margin-top:14px;font-size:12px;color:var(--dim);text-align:center;min-height:16px}
+
+  #run{justify-content:space-between;text-align:center;transition:background .5s}
+  #run.phase-work{background:#1C1206}
+  #run.phase-rest{background:#101E17}
+  #run.phase-prep{background:var(--ink)}
+  #run.phase-stretch{background:#0F1A24}
+  .run-top{padding-top:8px}
+  .phase-name{font-size:24px;font-weight:700;margin-top:8px}
+  .phase-hint{font-size:15px;color:var(--dim);margin-top:8px;line-height:1.5;padding:0 10px}
+  .big{font-size:clamp(96px,38vw,190px);font-weight:700;line-height:1;letter-spacing:-.02em}
+  .phase-work .big{color:var(--dawn)}
+  .phase-rest .big{color:var(--moss)}
+  .phase-prep .big,.phase-stretch .big{color:var(--bone)}
+  .run-next{font-size:13px;color:var(--dim)}
+  .run-next b{color:var(--bone)}
+  .stopbtn{margin-top:16px;background:transparent;border:1px solid var(--line);color:var(--dim);
+    border-radius:14px;padding:14px 22px;font-size:15px;cursor:pointer}
+  .horizon{position:fixed;left:0;bottom:0;height:5px;width:100%;background:#00000055}
+  .horizon i{display:block;height:100%;width:0;background:linear-gradient(90deg,var(--moss),var(--dawn));transition:width .3s linear}
+
+  #finish{justify-content:center;text-align:center;gap:8px}
+  #finish h1{font-size:30px;color:var(--moss)}
+  #finish .sum{font-size:16px;color:var(--dim);margin:8px 0 22px;line-height:1.6}
+  .q{font-size:17px;font-weight:600;margin-bottom:14px}
+  .qbtns{display:flex;gap:12px;justify-content:center}
+  .qbtns button{flex:1;max-width:170px;padding:16px;border-radius:14px;border:1px solid var(--line);
+    font-size:16px;font-weight:600;cursor:pointer}
+  .yes{background:var(--moss);color:#0A1710;border:none}
+  .no{background:transparent;color:var(--bone)}
+  .suggest{margin-top:22px;background:var(--mist);border:1px solid var(--dawn);border-radius:14px;
+    padding:16px;font-size:15px;line-height:1.5}
+  .suggest button{margin-top:12px;width:100%;padding:14px;border:none;border-radius:12px;
+    background:var(--dawn);color:#231604;font-size:16px;font-weight:700;cursor:pointer}
+  @media (prefers-reduced-motion: reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<!-- ============ DOMŮ ============ -->
+<div class="screen" id="home">
+  <div class="home-head">
+    <h1>Andrejka</h1>
+    <span class="eyebrow" id="dateLbl"></span>
+  </div>
+
+  <div class="today">
+    <div class="eyebrow">Dnes</div>
+    <div class="state todo" id="todayState">Ještě necvičeno</div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="num digits" id="streakNum">0</div><div class="lbl">dní v řadě</div></div>
+    <div class="stat"><div class="num digits" id="totalNum">0</div><div class="lbl">cvičení celkem</div></div>
+    <div class="stat"><div class="num digits" id="prNum">–</div><div class="lbl">rekord (s)</div></div>
+  </div>
+
+  <button class="startbtn" id="startBtn">Začít cvičit</button>
+  <button class="ghost ghostrow" id="demoBtn">Spustit demo — nic se neukládá</button>
+
+  <div class="target-row">
+    <span class="lbl">Délka planku</span>
+    <div class="target-ctl">
+      <button id="tMinus" aria-label="Ubrat 5 sekund">−</button>
+      <span class="val digits"><span id="targetVal">30</span> s</span>
+      <button id="tPlus" aria-label="Přidat 5 sekund">+</button>
+    </div>
+  </div>
+
+  <div class="chart-card">
+    <h2>Posledních 14 dní</h2>
+    <div id="chartWrap"><div class="chart-empty">Zatím žádná data — první cvičení se objeví tady.</div></div>
+  </div>
+
+  <div class="routine">
+    <b>Sestava:</b> 3× plank · mezi nimi most 10× a bird-dog 5×/stranu · na závěr kobra.
+    Jedno ťuknutí na start — dál už všechno běží samo, přechody ohlásí pípnutí.
+  </div>
+
+  <div class="toolbar">
+    <button id="exportBtn">Uložit zálohu</button>
+    <button id="importBtn">Načíst zálohu</button>
+    <button id="addDayBtn">Dopsat dnešek</button>
+  </div>
+  <div class="note" id="note"></div>
+  <input type="file" id="fileInput" accept="application/json" class="hidden">
+</div>
+
+<!-- ============ BĚH ============ -->
+<div class="screen hidden" id="run">
+  <div class="run-top">
+    <div class="eyebrow" id="stepLbl">Krok 1 / 7</div>
+    <div class="phase-name" id="phaseName">Příprava</div>
+    <div class="phase-hint" id="phaseHint"></div>
+  </div>
+  <div class="big digits" id="bigTime">10</div>
+  <div>
+    <div class="run-next" id="nextLbl"></div>
+    <button class="stopbtn" id="stopBtn">Ukončit cvičení</button>
+  </div>
+  <div class="horizon"><i id="horizonBar"></i></div>
+</div>
+
+<!-- ============ KONEC ============ -->
+<div class="screen hidden" id="finish">
+  <h1>Hotovo!</h1>
+  <div class="sum" id="finishSum"></div>
+  <div id="askBlock">
+    <div class="q">Bylo to zvládnutelné?</div>
+    <div class="qbtns">
+      <button class="yes" id="okYes">Ano</button>
+      <button class="no" id="okNo">Bylo to těžké</button>
+    </div>
+  </div>
+  <div class="suggest hidden" id="suggestBlock">
+    Tři kola v pohodě za sebou — čas přidat.
+    <button id="suggestBtn">Prodloužit na <span id="suggestVal"></span> s</button>
+  </div>
+  <button class="ghost" id="backBtn" style="margin-top:16px">Zpět na přehled</button>
+</div>
+
+<script>
+(function(){
+  "use strict";
+  var KEY="andrejka-v1";
+  var state={target:30, okStreak:0, sessions:[]};
+
+  function $(id){return document.getElementById(id);}
+  function show(id){["home","run","finish"].forEach(function(s){$(s).classList.toggle("hidden",s!==id);});}
+  function todayStr(d){d=d||new Date();
+    return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
+  function say(msg){$("note").textContent=msg;if(msg){setTimeout(function(){$("note").textContent="";},4000);}}
+
+  /* ---- úložiště: přímo v telefonu ---- */
+  function load(){
+    try{var raw=localStorage.getItem(KEY);
+      if(raw){var v=JSON.parse(raw);if(v&&typeof v.target==="number"){state=v;}}}
+    catch(e){}
+  }
+  function save(){
+    try{localStorage.setItem(KEY,JSON.stringify(state));}
+    catch(e){say("Uložení se nepovedlo — zkontrolujte místo v telefonu.");}
+  }
+
+  function sessionByDay(){var m={};state.sessions.forEach(function(s){m[s.d]=s;});return m;}
+  function streak(){
+    var m=sessionByDay(),n=0,d=new Date();
+    if(!m[todayStr(d)])d.setDate(d.getDate()-1);
+    while(m[todayStr(d)]){n++;d.setDate(d.getDate()-1);}
+    return n;}
+  function personalRecord(){var pr=0;state.sessions.forEach(function(s){if(s.full&&s.t>pr)pr=s.t;});return pr;}
+
+  var MONTHS=["ledna","února","března","dubna","května","června","července","srpna","září","října","listopadu","prosince"];
+  function renderHome(){
+    var now=new Date();
+    $("dateLbl").textContent=now.getDate()+". "+MONTHS[now.getMonth()];
+    var doneToday=!!sessionByDay()[todayStr()];
+    var st=$("todayState");
+    st.textContent=doneToday?"Odcvičeno ✓":"Ještě necvičeno";
+    st.className="state "+(doneToday?"done":"todo");
+    $("startBtn").textContent=doneToday?"Cvičit znovu":"Začít cvičit";
+    $("addDayBtn").classList.toggle("hidden",doneToday);
+    $("streakNum").textContent=streak();
+    $("totalNum").textContent=state.sessions.length;
+    var pr=personalRecord();$("prNum").textContent=pr>0?pr:"–";
+    $("targetVal").textContent=state.target;
+    renderChart();
+  }
+  function renderChart(){
+    if(!state.sessions.length){
+      $("chartWrap").innerHTML='<div class="chart-empty">Zatím žádná data — první cvičení se objeví tady.</div>';
+      return;}
+    var m=sessionByDay(),days=[],max=10;
+    for(var i=13;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);
+      var s=m[todayStr(d)];var val=s?(s.full?s.t:Math.round(s.t*s.done/3)):0;
+      if(val>max)max=val;
+      days.push({val:val,full:s?s.full:false,dow:d.getDay()});}
+    var W=300,H=110,bw=W/14;
+    var svg='<svg viewBox="0 0 '+W+' '+(H+16)+'" width="100%" role="img" aria-label="Graf posledních 14 dní">';
+    days.forEach(function(dd,i){
+      var h=dd.val?Math.max(4,Math.round(dd.val/max*H)):2;
+      var col=dd.val?(dd.full?"#F5A83C":"#F5A83C88"):"#24404788";
+      svg+='<rect x="'+(i*bw+3)+'" y="'+(H-h)+'" width="'+(bw-6)+'" height="'+h+'" rx="3" fill="'+col+'"/>';
+      if(dd.dow===1){svg+='<text x="'+(i*bw+bw/2)+'" y="'+(H+13)+'" font-size="9" fill="#9FB3B0" text-anchor="middle">Po</text>';}
+    });
+    svg+='</svg>';
+    $("chartWrap").innerHTML=svg;
+  }
+
+  /* ---- zvuk ---- */
+  var actx=null;
+  function beep(freq,dur,when){
+    if(!actx)return;
+    var o=actx.createOscillator(),g=actx.createGain();
+    o.type="sine";o.frequency.value=freq;
+    g.gain.setValueAtTime(0.0001,actx.currentTime+when);
+    g.gain.exponentialRampToValueAtTime(0.4,actx.currentTime+when+0.02);
+    g.gain.exponentialRampToValueAtTime(0.0001,actx.currentTime+when+dur);
+    o.connect(g);g.connect(actx.destination);
+    o.start(actx.currentTime+when);o.stop(actx.currentTime+when+dur+0.05);
+  }
+  function sndTick(){beep(880,0.12,0);}
+  function sndPhase(){beep(587,0.35,0);}
+  function sndDone(){beep(659,0.2,0);beep(784,0.2,0.25);beep(988,0.45,0.5);}
+
+  /* ---- obrazovka nezhasne ---- */
+  var wakeLock=null;
+  function lockScreen(){
+    try{if("wakeLock" in navigator){navigator.wakeLock.request("screen").then(function(w){wakeLock=w;},function(){});}}catch(e){}
+  }
+  function unlockScreen(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
+  document.addEventListener("visibilitychange",function(){
+    if(document.visibilityState==="visible"&&running){lockScreen();}});
+
+  /* ---- kolo ---- */
+  function buildPhases(){
+    var T=demo?5:state.target,R=demo?5:60,K=demo?5:30,P=demo?3:10;
+    return [
+      {n:"Příprava",h:"Položte telefon a zaujměte polohu planku.",d:P,k:"prep"},
+      {n:"Plank 1/3",h:"Rovná záda, zpevněné břicho, nepropadat v bocích.",d:T,k:"work"},
+      {n:"Most",h:"Leh na zádech, 10× pomalu zvednout a spustit pánev.",d:R,k:"rest"},
+      {n:"Plank 2/3",h:"Dýchejte klidně, pohled do země.",d:T,k:"work"},
+      {n:"Bird-dog",h:"Vzpor klečmo, 5× natáhnout ruku a protilehlou nohu.",d:R,k:"rest"},
+      {n:"Plank 3/3",h:"Poslední série — vydržte.",d:T,k:"work"},
+      {n:"Kobra",h:"Leh na břiše, zvednout hrudník, protáhnout břicho.",d:K,k:"stretch"}
+    ];
+  }
+  var phases=[],pi=0,phaseEnd=0,totalDur=0,elapsedBefore=0,timer=null,running=false,planksDone=0,ticked={},demo=false;
+
+  function startWorkout(isDemo){
+    demo=!!isDemo;
+    if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
+    if(actx&&actx.state==="suspended"){actx.resume();}
+    phases=buildPhases();pi=0;planksDone=0;running=true;
+    totalDur=phases.reduce(function(a,p){return a+p.d;},0);elapsedBefore=0;
+    show("run");lockScreen();enterPhase();
+    timer=setInterval(tick,200);
+  }
+  function enterPhase(){
+    var p=phases[pi];ticked={};
+    phaseEnd=Date.now()+p.d*1000;
+    $("stepLbl").textContent=(demo?"Demo · ":"")+"Krok "+(pi+1)+" / "+phases.length;
+    $("phaseName").textContent=p.n;
+    $("phaseHint").textContent=p.h;
+    var nx=phases[pi+1];
+    $("nextLbl").innerHTML=nx?("Následuje: <b>"+nx.n+"</b>"):"Poslední krok";
+    $("run").className="screen phase-"+p.k;
+    if(pi>0){sndPhase();}
+    $("bigTime").textContent=p.d;
+  }
+  function tick(){
+    var left=Math.ceil((phaseEnd-Date.now())/1000);
+    if(left<0)left=0;
+    $("bigTime").textContent=left;
+    if(left<=3&&left>=1&&!ticked[left]){ticked[left]=true;sndTick();}
+    var p=phases[pi];
+    $("horizonBar").style.width=((elapsedBefore+(p.d-left))/totalDur*100)+"%";
+    if(left===0){
+      if(p.k==="work"){planksDone++;}
+      elapsedBefore+=p.d;pi++;
+      if(pi>=phases.length){endWorkout(true);}else{enterPhase();}
+    }
+  }
+  function recordDay(t,done,full){
+    var d=todayStr(),prev=sessionByDay()[d];
+    var cur={d:d,t:t,done:done,full:!!full};
+    if(prev&&((prev.full&&!cur.full)||(prev.full===cur.full&&prev.t>cur.t))){cur=prev;}
+    state.sessions=state.sessions.filter(function(s){return s.d!==d;}).concat([cur]);
+    save();
+  }
+  function endWorkout(full){
+    clearInterval(timer);timer=null;running=false;unlockScreen();
+    if(full){sndDone();}
+    if(demo){
+      $("finishSum").textContent="Demo dokončeno — do vaší historie se nic nezapsalo.";
+      $("askBlock").classList.add("hidden");$("suggestBlock").classList.add("hidden");
+      show("finish");return;
+    }
+    if(planksDone===0){show("home");renderHome();return;}
+    recordDay(state.target,planksDone,full&&planksDone>=3);
+    $("finishSum").textContent = full
+      ? "3× plank "+state.target+" s, most, bird-dog i kobra. Série pokračuje."
+      : "Uloženo: "+planksDone+" z 3 planků po "+state.target+" s.";
+    $("askBlock").classList.toggle("hidden",!full);
+    $("suggestBlock").classList.add("hidden");
+    show("finish");
+  }
+
+  /* ---- záloha ---- */
+  function exportData(){
+    var blob=new Blob([JSON.stringify(state,null,2)],{type:"application/json"});
+    var a=document.createElement("a");
+    a.href=URL.createObjectURL(blob);
+    a.download="andrejka-zaloha-"+todayStr()+".json";
+    document.body.appendChild(a);a.click();document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(a.href);},2000);
+    say("Záloha stažena do Souborů.");
+  }
+  function importData(file){
+    var r=new FileReader();
+    r.onload=function(){
+      try{
+        var v=JSON.parse(r.result);
+        if(!v||typeof v.target!=="number"||!Array.isArray(v.sessions)){throw 0;}
+        state=v;save();renderHome();say("Záloha načtena.");
+      }catch(e){say("Soubor nejde přečíst — je to záloha Andrejky?");}
+    };
+    r.readAsText(file);
+  }
+
+  /* ---- ovládání ---- */
+  $("startBtn").addEventListener("click",function(){startWorkout(false);});
+  $("demoBtn").addEventListener("click",function(){startWorkout(true);});
+  $("stopBtn").addEventListener("click",function(){endWorkout(false);});
+  $("tMinus").addEventListener("click",function(){
+    if(state.target>10){state.target-=5;state.okStreak=0;$("targetVal").textContent=state.target;save();}});
+  $("tPlus").addEventListener("click",function(){
+    if(state.target<300){state.target+=5;state.okStreak=0;$("targetVal").textContent=state.target;save();}});
+  $("okYes").addEventListener("click",function(){
+    state.okStreak=(state.okStreak||0)+1;
+    $("askBlock").classList.add("hidden");
+    if(state.okStreak>=3){$("suggestVal").textContent=state.target+5;$("suggestBlock").classList.remove("hidden");}
+    save();});
+  $("okNo").addEventListener("click",function(){
+    state.okStreak=0;$("askBlock").classList.add("hidden");save();});
+  $("suggestBtn").addEventListener("click",function(){
+    state.target+=5;state.okStreak=0;$("suggestBlock").classList.add("hidden");save();});
+  $("backBtn").addEventListener("click",function(){show("home");renderHome();});
+  $("exportBtn").addEventListener("click",exportData);
+  $("importBtn").addEventListener("click",function(){$("fileInput").click();});
+  $("fileInput").addEventListener("change",function(e){
+    if(e.target.files&&e.target.files[0]){importData(e.target.files[0]);}
+    e.target.value="";});
+  $("addDayBtn").addEventListener("click",function(){
+    recordDay(state.target,3,true);renderHome();say("Dnešek zapsán.");});
+
+  /* ---- start ---- */
+  load();renderHome();show("home");
+  if("serviceWorker" in navigator){
+    window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});
+  }
+})();
+</script>
+</body>
+</html>
