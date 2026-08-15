@@ -73,6 +73,31 @@
   .toolbar button{background:transparent;border:1px solid var(--line);color:var(--dim);
     border-radius:12px;padding:10px 14px;font-size:13px;cursor:pointer}
   .note{margin-top:14px;font-size:12px;color:var(--dim);text-align:center;min-height:16px}
+  .ver{margin-top:18px;font-size:11px;color:#5F7370;text-align:center;letter-spacing:.06em}
+  .guidelink{display:block;width:100%;margin-top:12px;padding:12px;border-radius:12px;
+    border:1px solid var(--line);background:transparent;color:var(--dawn);
+    font-size:14px;font-weight:600;cursor:pointer}
+
+  #guide{display:block}
+  .guide-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:20px}
+  .guide-head h1{font-size:21px;font-weight:700}
+  .guide-body{font-size:15px;line-height:1.65;padding-bottom:26px}
+  .guide-body p{margin-bottom:12px;color:#D6D0C4}
+  .guide-body h2{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:var(--dawn);
+    font-weight:600;margin:30px 0 12px;padding-top:14px;border-top:1px solid var(--line)}
+  .guide-body h3{font-size:17px;font-weight:700;margin:22px 0 8px;color:var(--bone)}
+  .guide-body b{color:var(--bone);font-weight:600}
+  .guide-body ul{margin:0 0 14px 20px}
+  .guide-body li{margin-bottom:7px;color:#D6D0C4}
+  .tip{background:var(--mist);border:1px solid var(--line);border-left:3px solid var(--ember);
+    border-radius:10px;padding:11px 13px;margin-bottom:12px;font-size:14px;line-height:1.55;color:#D6D0C4}
+  .tip b{color:var(--ember)}
+  .steps{width:100%;border-collapse:collapse;font-size:14px;margin-bottom:14px}
+  .steps td{padding:8px 0;border-bottom:1px solid var(--line);color:#D6D0C4}
+  .steps td.t{text-align:right;color:var(--dim);white-space:nowrap;padding-left:10px}
+  .steps tr.w td{color:var(--dawn);font-weight:600}
+  .guide-foot{margin-top:26px;padding-top:16px;border-top:1px solid var(--line);
+    font-size:12px;color:var(--dim);text-align:center;line-height:1.6}
 
   #run{justify-content:space-between;text-align:center;transition:background .5s}
   #run.phase-work{background:#1C1206}
@@ -166,6 +191,7 @@
     <b>Sestava:</b> 3× plank · mezi nimi most 10× a bird-dog 5×/stranu · před každým plankem
     čas na přesun do polohy · na závěr kobra.
     Jedno ťuknutí na start — dál už všechno běží samo, přechody ohlásí zvuk i hlas.
+    <button class="guidelink" id="guideBtn">Návod — jak cviky provádět</button>
   </div>
 
   <div class="toolbar">
@@ -175,7 +201,128 @@
     <button id="shareBtn">Sdílet aplikaci</button>
   </div>
   <div class="note" id="note"></div>
+  <div class="ver" id="verLbl"></div>
   <input type="file" id="fileInput" accept="application/json" class="hidden">
+</div>
+
+<!-- ============ NÁVOD ============ -->
+<div class="screen hidden" id="guide">
+  <div class="guide-head">
+    <h1>Návod</h1>
+    <button class="ghost" id="guideClose">Zavřít</button>
+  </div>
+
+  <div class="guide-body">
+    <p>Sestava zabere něco přes čtyři minuty a posílí střed těla — břicho, hýždě a hluboké
+    svaly u páteře. Ty drží záda vzpřímená celý den. Nepotřebuješ nic než kus koberce
+    a telefon položený vedle sebe.</p>
+    <p>Aplikace tě provede sama. Ťukneš na start, odložíš telefon a dál jen posloucháš —
+    hlas řekne, co dělat, pípnutí ohlásí přechody. Na displej se nemusíš podívat ani jednou.</p>
+
+    <h2>Sestava</h2>
+    <table class="steps">
+      <tr><td>1 · Příprava — lehni si do planku</td><td class="t">10 s</td></tr>
+      <tr class="w"><td>2 · Plank 1/3</td><td class="t">30 s</td></tr>
+      <tr><td>3 · Most, 10 opakování</td><td class="t">50 s</td></tr>
+      <tr><td>4 · Přesun do planku</td><td class="t">10 s</td></tr>
+      <tr class="w"><td>5 · Plank 2/3</td><td class="t">30 s</td></tr>
+      <tr><td>6 · Bird-dog, 5× na stranu</td><td class="t">50 s</td></tr>
+      <tr><td>7 · Přesun do planku</td><td class="t">10 s</td></tr>
+      <tr class="w"><td>8 · Plank 3/3</td><td class="t">30 s</td></tr>
+      <tr><td>9 · Kobra — protažení</td><td class="t">30 s</td></tr>
+    </table>
+    <p>Před každým plankem máš deset vteřin na to, aby ses převalil ze zad do polohy.
+    Konec cviku ohlásí <b>dvojité pípnutí zdola nahoru</b> — to znamená „přestaň a otoč se".
+    Posledních pět vteřin odpočítává pípání. Časy jdou nastavit, tohle je výchozí sestava.</p>
+
+    <h2>Čtyři cviky</h2>
+
+    <h3>Plank</h3>
+    <p>Opři se o předloktí, <b>lokty přesně pod rameny</b>. Tělo tvoří jednu přímku od hlavy
+    po paty. Zpevni břicho, stiskni hýždě a mírně podsaď pánev — jako bys chtěl přitáhnout
+    stydkou kost k žebrům. Dívej se do země pod sebe, krk je prodloužením páteře.
+    <b>Dýchej plynule.</b></p>
+    <div class="tip"><b>Nejčastější chyba:</b> propadlá bedra. Poznáš to tak, že tě po chvíli
+    začnou tlačit záda místo břicha. Pomůže víc stisknout hýždě a podsadit pánev.</div>
+    <div class="tip"><b>Druhá chyba:</b> vysazená pánev do stříšky. Je to úlevová poloha,
+    cvik pak skoro nic nedělá.</div>
+    <p>Když je to moc těžké, dej si kolena na zem nebo se opři o kuchyňskou linku. Lepší
+    poctivých patnáct vteřin než minuta v propadlém prkně.</p>
+
+    <h3>Most</h3>
+    <p>Leh na zádech, chodidla na šířku pánve, <b>paty pod koleny</b>, ruce podél těla.
+    Tlakem přes paty zvedni pánev, nahoře pořádně stiskni hýždě — tělo je v přímce
+    od kolen po ramena. Pomalu zpět, ale zadek na zem jen lehce ťukne.
+    Deset opakování v klidném tempu.</p>
+    <div class="tip"><b>Chyba:</b> prohnutí v bedrech místo práce hýždí. Zvedáš-li se přes
+    záda, sniž rozsah a soustřeď se na stisk hýždí.</div>
+    <div class="tip"><b>Chyba:</b> chodidla moc daleko od těla — pak cvik dělají zadní
+    stehna a hýždě se skoro nezapojí.</div>
+
+    <h3>Bird-dog</h3>
+    <p>Vzpor klečmo: ruce pod rameny, kolena pod boky, záda rovná. Natáhni
+    <b>pravou ruku a levou nohu</b> do jedné přímky s tělem a chvilku vydrž. Vrať se
+    a vystřídej. Pět na každou stranu.</p>
+    <div class="tip"><b>Klíčové:</b> pánev se nesmí naklánět do strany. Představ si, že máš
+    na kříži postavenou skleničku vody. Radši nižší rozsah a stabilní pánev než vysoko
+    zvednutá noha.</div>
+    <p>Tenhle cvik je o kontrole, ne o počtu. Nespěchej.</p>
+
+    <h3>Kobra</h3>
+    <p>Leh na břiše, dlaně pod rameny. Zvedni hrudník, ale <b>ramena táhni dolů od uší</b>
+    a boky nech na zemi. Neklaň hlavu do krku — dívej se dopředu. Protahuje se ti přední
+    strana trupu po tom, cos ji tři kola zpevňoval. Dýchej.</p>
+    <div class="tip"><b>Pravidlo:</b> má to táhnout, ne bolet. Jakmile cítíš tlak v bedrech,
+    povol.</div>
+
+    <h2>Ovládání</h2>
+    <ul>
+      <li><b>Začít cvičit</b> spustí kolo. Odlož telefon vedle sebe displejem nahoru —
+      zvuk musí být zapnutý, jinak přijdeš o hlas i pípání.</li>
+      <li><b>Spustit demo</b> projde celou sestavu ve zrychlení, každý krok pár vteřin.
+      Nic se neuloží. Vyzkoušej si to napoprvé, ať víš, co čekat.</li>
+      <li><b>Délka planku</b> — začni na 20 nebo 30 vteřinách. Špatně provedená minuta
+      je horší než poctivých dvacet vteřin.</li>
+      <li><b>Přesun do planku</b> — kolik času dostaneš na otočení, 5 až 20 vteřin.</li>
+      <li><b>Hlasový trenér</b> se dá vypnout, pak zůstanou jen zvuky. Pokud telefon
+      neumí česky mluvit, řádek se vůbec neukáže.</li>
+      <li><b>Ukončit cvičení</b> uprostřed kola není ostuda — uloží se počet planků,
+      které jsi stihl.</li>
+    </ul>
+    <p>Po cvičení se aplikace zeptá, jestli to bylo zvládnutelné. Odpovídej upřímně:
+    <b>po třech „Ano" za sebou</b> ti sama nabídne prodloužit plank o pět vteřin.
+    Tak se posouvá tempo, aniž bys musel cokoli řešit.</p>
+
+    <h2>Přehled a zálohy</h2>
+    <p>Nahoře vidíš <b>dní v řadě</b>, <b>cvičení celkem</b> a <b>rekord</b>. Graf ukazuje
+    posledních čtrnáct dní; když si dáš víc kol v jednom dni, objeví se nad sloupcem ×2.</p>
+    <p><b>Uložit zálohu</b> stáhne historii do souboru. Udělej to jednou za čas — když
+    vyčistíš prohlížeč nebo smažeš ikonu z plochy, data zmizí. <b>Načíst zálohu</b>
+    je vrátí zpátky. Všechno zůstává v telefonu a nikam se neodesílá.</p>
+
+    <h2>Přidat na plochu</h2>
+    <p>Udělej z odkazu ikonu — pak se aplikace spouští jako běžná appka a funguje i bez
+    internetu.</p>
+    <ul>
+      <li><b>Android (Chrome)</b> — menu se třemi tečkami vpravo nahoře →
+      <i>Přidat na plochu</i> (nebo <i>Instalovat aplikaci</i>).</li>
+      <li><b>iPhone</b> — musíš být v <b>Safari</b>, v Chromu to nejde. Tlačítko
+      <i>Sdílet</i> (čtvereček se šipkou nahoru) → <i>Přidat na plochu</i>.</li>
+    </ul>
+    <p>První spuštění potřebuje internet, pak už ne.</p>
+
+    <h2>Jak to rozjet</h2>
+    <p>První týden ber jako seznamovací. Cíl je jediný — udělat to každý den, ne udělat
+    to dlouho. Série dní v řadě je jediné číslo, na kterém záleží.</p>
+    <p>Když jeden den vynecháš, série spadne na nulu. To je celá sankce. Zítra začni znovu.</p>
+    <div class="tip"><b>Nemá to bolet.</b> Tah ve svalech ano, ostrá bolest v zádech ne —
+    když se objeví, skonči a příště zvol lehčí variantu. Pokud máš se zády potíže
+    dlouhodobě, ukaž sestavu nejdřív fyzioterapeutovi.</div>
+
+    <div class="guide-foot" id="guideFoot"></div>
+  </div>
+
+  <button class="ghost ghostrow" id="guideBack">Zpět na přehled</button>
 </div>
 
 <!-- ============ SDÍLENÍ ============ -->
@@ -184,6 +331,7 @@
     <h2>Sdílet Andrejku</h2>
     <div class="share-qr" id="shareQr"></div>
     <div class="share-url" id="shareUrl"></div>
+    <div class="share-url" style="margin-top:-6px">Návod na cviky je součástí aplikace.</div>
     <div class="share-btns">
       <button class="prim" id="shareSysBtn">Sdílet…</button>
       <button id="shareCopyBtn">Zkopírovat odkaz</button>
@@ -234,10 +382,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
+  var VERSION="1.1.0";
+  var VERSION_DATE="15. 8. 2026";
   var state={target:30, ready:10, voice:true, okStreak:0, sessions:[]};
 
   function $(id){return document.getElementById(id);}
-  function show(id){["home","run","finish"].forEach(function(s){$(s).classList.toggle("hidden",s!==id);});}
+  function show(id){["home","run","finish","guide"].forEach(function(s){$(s).classList.toggle("hidden",s!==id);});}
   function todayStr(d){d=d||new Date();
     return d.getFullYear()+"-"+String(d.getMonth()+1).padStart(2,"0")+"-"+String(d.getDate()).padStart(2,"0");}
   function say(msg){$("note").textContent=msg;if(msg){setTimeout(function(){$("note").textContent="";},4000);}}
@@ -485,6 +635,11 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   $("suggestBtn").addEventListener("click",function(){
     state.target+=5;state.okStreak=0;$("suggestBlock").classList.add("hidden");save();});
   $("backBtn").addEventListener("click",function(){show("home");renderHome();});
+  function openGuide(){show("guide");window.scrollTo(0,0);}
+  function closeGuide(){show("home");renderHome();window.scrollTo(0,0);}
+  $("guideBtn").addEventListener("click",openGuide);
+  $("guideClose").addEventListener("click",closeGuide);
+  $("guideBack").addEventListener("click",closeGuide);
   $("exportBtn").addEventListener("click",exportData);
   $("importBtn").addEventListener("click",function(){$("fileInput").click();});
   $("fileInput").addEventListener("change",function(e){
@@ -526,12 +681,16 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   });
   $("shareSysBtn").addEventListener("click",function(){
     if(navigator.share){
-      navigator.share({title:"Andrejka",text:"Ranní plank s Andrejkou",url:APP_URL})
+      navigator.share({title:"Andrejka",
+        text:"Ranní plank — čtyřminutová sestava na střed těla. Návod na cviky je přímo v aplikaci.",
+        url:APP_URL})
         .then(closeShare,function(){});
     }
   });
 
   /* ---- start ---- */
+  $("verLbl").textContent="Andrejka "+VERSION+" · "+VERSION_DATE;
+  $("guideFoot").innerHTML="Andrejka — verze "+VERSION+"<br>"+VERSION_DATE;
   load();renderHome();show("home");
   if("serviceWorker" in navigator){
     window.addEventListener("load",function(){navigator.serviceWorker.register("sw.js").catch(function(){});});
