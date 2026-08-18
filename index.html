@@ -52,8 +52,12 @@
   .togglebtn{border:1px solid var(--line);background:transparent;color:var(--bone);
     border-radius:12px;padding:10px 18px;font-size:14px;font-weight:600;cursor:pointer}
   .togglebtn.off{color:var(--dim)}
-  #shareOverlay{position:fixed;inset:0;background:#000000BB;display:flex;align-items:center;
-    justify-content:center;padding:24px;z-index:10}
+  #shareOverlay,#pauseOverlay{position:fixed;inset:0;background:#000000DD;display:flex;
+    align-items:center;justify-content:center;padding:24px;z-index:10}
+  .pause-info{font-size:15px;color:var(--dim);margin-bottom:18px;line-height:1.6}
+  .pause-info b{color:var(--bone);display:block;font-size:18px;margin-bottom:4px}
+  .runbtns{display:flex;gap:10px;justify-content:center}
+  .runbtns .stopbtn{flex:1;max-width:180px}
   .share-card{background:var(--mist);border:1px solid var(--line);border-radius:18px;
     padding:22px;max-width:340px;width:100%;text-align:center}
   .share-card h2{font-size:17px;font-weight:600;margin-bottom:14px}
@@ -177,6 +181,15 @@
     </div>
   </div>
 
+  <div class="target-row">
+    <span class="lbl">Úroveň<br><b id="levelName" style="color:var(--bone);font-weight:600">Základní plank</b></span>
+    <div class="target-ctl">
+      <button id="vMinus" aria-label="Snížit úroveň">−</button>
+      <span class="val digits" id="levelVal">1</span>
+      <button id="vPlus" aria-label="Zvýšit úroveň">+</button>
+    </div>
+  </div>
+
   <div class="target-row" id="voiceRow">
     <span class="lbl">Hlasový trenér</span>
     <button class="togglebtn" id="voiceBtn">Zapnutý</button>
@@ -231,9 +244,12 @@
       <tr class="w"><td>8 · Plank 3/3</td><td class="t">30 s</td></tr>
       <tr><td>9 · Kobra — protažení</td><td class="t">30 s</td></tr>
     </table>
-    <p>Před každým plankem máš deset vteřin na to, aby ses převalil ze zad do polohy.
-    Konec cviku ohlásí <b>dvojité pípnutí zdola nahoru</b> — to znamená „přestaň a otoč se".
-    Posledních pět vteřin odpočítává pípání. Časy jdou nastavit, tohle je výchozí sestava.</p>
+    <p>Před každým plankem máš deset vteřin na přesun. Po mostu se převaluješ ze zad,
+    po bird-dogu už klečíš na čtyřech a jen se spustíš na předloktí — hlas ti pokaždé
+    řekne, co přesně udělat. Konec cviku ohlásí <b>dvojité pípnutí zdola nahoru</b>.
+    Časy jdou nastavit, tohle je výchozí sestava.</p>
+    <p>Během planku ti hlas hlásí půlku, deset vteřin a odpočítá posledních pět.
+    Když hlas vypneš, poslední tři vteřiny místo toho pípnou.</p>
 
     <h2>Čtyři cviky</h2>
 
@@ -248,6 +264,31 @@
     cvik pak skoro nic nedělá.</div>
     <p>Když je to moc těžké, dej si kolena na zem nebo se opři o kuchyňskou linku. Lepší
     poctivých patnáct vteřin než minuta v propadlém prkně.</p>
+
+    <h3>Napětí — nejdůležitější trik</h3>
+    <p>Plank není o tom vydržet dlouho, ale o tom být tuhý. Zkus v poloze <b>přitáhnout
+    lokty směrem k patám</b> — jako bys chtěl shrnout podložku pod předloktím k nohám.
+    Nikam se nepohnou, protože se o ně opíráš vahou, ale vznikne obrovské napětí.
+    Zapojí se ti široké zádové svaly a přes ně se žebra stáhnou k pánvi, takže bedra
+    přestanou propadat sama od sebe.</p>
+    <p>Celý balík: táhnout lokty k patám · stisknout hýždě · zpevnit břicho, jako by tě
+    měl někdo praštit · propnout kolena · <b>dýchat, nezadržovat dech</b>.</p>
+    <div class="tip"><b>Test:</b> plank musí být rázem výrazně těžší. Když se nic
+    nezměnilo, netlačíš dost. Lokty ale nesmí doopravdy sklouznout — je to záměr,
+    ne pohyb.</div>
+
+    <h3>Úrovně planku</h3>
+    <p>Až ti výdrž přeroste 45 vteřin, přidávat další čas už moc nepřinese. Dál se
+    postupuje obtížností — aplikace ti to sama nabídne a čas vrátí na 30 s.</p>
+    <ul>
+      <li><b>1 · Základní plank</b> — opora o předloktí, tělo v přímce.</li>
+      <li><b>2 · Se zvedáním paže</b> — střídavě odlep ruku na dvě tři vteřiny.
+      Musíš bránit rotaci pánve.</li>
+      <li><b>3 · Se zvedáním nohy</b> — totéž s nataženou nohou, o stupeň těžší.</li>
+      <li><b>4 · Dlouhá páka</b> — lokty posunuté před ramena. Brutální nárůst
+      obtížnosti bez jediné vteřiny navíc.</li>
+    </ul>
+    <p>Úroveň jde kdykoli přepnout ručně na úvodní obrazovce.</p>
 
     <h3>Most</h3>
     <p>Leh na zádech, chodidla na šířku pánve, <b>paty pod koleny</b>, ruce podél těla.
@@ -286,16 +327,30 @@
       <li><b>Přesun do planku</b> — kolik času dostaneš na otočení, 5 až 20 vteřin.</li>
       <li><b>Hlasový trenér</b> se dá vypnout, pak zůstanou jen zvuky. Pokud telefon
       neumí česky mluvit, řádek se vůbec neukáže.</li>
+      <li><b>Pauza</b> zastaví cvičení. Totéž se stane samo, když aplikaci opustíš
+      nebo ti někdo zavolá — čas neběží dál naprázdno.</li>
       <li><b>Ukončit cvičení</b> uprostřed kola není ostuda — uloží se počet planků,
       které jsi stihl.</li>
     </ul>
+    <p>Po přerušení se aplikace sama nerozjede. Nabídne ti <b>Pokračovat</b> (dodělá
+    zbytek fáze), <b>Zopakovat tuto fázi</b> (když ti mezitím vychladla) nebo
+    <b>Ukončit</b>. V obou případech nejdřív dostaneš odpočet, aby ses stihl vrátit
+    do polohy.</p>
     <p>Po cvičení se aplikace zeptá, jestli to bylo zvládnutelné. Odpovídej upřímně:
-    <b>po třech „Ano" za sebou</b> ti sama nabídne prodloužit plank o pět vteřin.
-    Tak se posouvá tempo, aniž bys musel cokoli řešit.</p>
+    <b>po třech „Ano" za sebou</b> ti sama nabídne posun — do 45 vteřin delší plank,
+    pak vyšší úroveň. Když ťukneš na „Bylo to těžké", počítadlo se vynuluje
+    a nabízení přestane.</p>
+    <div class="tip"><b>Nespěchej na vteřiny.</b> Prvních pár týdnů se zlepšuje hlavně
+    koordinace, ne síla. Poctivých 30 vteřin s maximálním napětím je lepší trénink
+    než rozpadlá minuta.</div>
 
     <h2>Přehled a zálohy</h2>
     <p>Nahoře vidíš <b>dní v řadě</b>, <b>cvičení celkem</b> a <b>rekord</b>. Graf ukazuje
     posledních čtrnáct dní; když si dáš víc kol v jednom dni, objeví se nad sloupcem ×2.</p>
+    <p><b>Sérii dní udrží den, ve kterém jsi zvládl aspoň dva ze tří planků.</b> Jeden
+    plank se zapíše taky, ale sloupec v grafu zůstane jen obrysem a série se přeruší —
+    na úvodu pak stojí „Začato, nedokončeno". Když aplikaci uprostřed cvičení zavřeš
+    a nevrátíš se, neuloží se nic.</p>
     <p><b>Uložit zálohu</b> stáhne historii do souboru. Udělej to jednou za čas — když
     vyčistíš prohlížeč nebo smažeš ikonu z plochy, data zmizí. <b>Načíst zálohu</b>
     je vrátí zpátky. Všechno zůstává v telefonu a nikam se neodesílá.</p>
@@ -350,9 +405,25 @@
   <div class="big digits" id="bigTime">10</div>
   <div>
     <div class="run-next" id="nextLbl"></div>
-    <button class="stopbtn" id="stopBtn">Ukončit cvičení</button>
+    <div class="runbtns">
+      <button class="stopbtn" id="pauseBtn">Pauza</button>
+      <button class="stopbtn" id="stopBtn">Ukončit cvičení</button>
+    </div>
   </div>
   <div class="horizon"><i id="horizonBar"></i></div>
+</div>
+
+<!-- ============ PAUZA ============ -->
+<div id="pauseOverlay" class="hidden">
+  <div class="share-card">
+    <h2>Cvičení pozastaveno</h2>
+    <div class="pause-info" id="pauseInfo"></div>
+    <div class="share-btns">
+      <button class="prim" id="resumeBtn">Pokračovat</button>
+      <button id="repeatBtn">Zopakovat tuto fázi</button>
+      <button id="abortBtn">Ukončit cvičení</button>
+    </div>
+  </div>
 </div>
 
 <!-- ============ KONEC ============ -->
@@ -367,8 +438,8 @@
     </div>
   </div>
   <div class="suggest hidden" id="suggestBlock">
-    Tři kola v pohodě za sebou — čas přidat.
-    <button id="suggestBtn">Prodloužit na <span id="suggestVal"></span> s</button>
+    <div id="suggestText"></div>
+    <button id="suggestBtn"></button>
   </div>
   <button class="ghost" id="backBtn" style="margin-top:16px">Zpět na přehled</button>
 </div>
@@ -382,9 +453,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.1.0";
+  var VERSION="1.2.0";
   var VERSION_DATE="15. 8. 2026";
-  var state={target:30, ready:10, voice:true, okStreak:0, sessions:[]};
+  var state={target:30, ready:10, level:1, voice:true, okStreak:0, sessions:[]};
+
+  /* úrovně planku — progres obtížností místo nekonečných vteřin */
+  var LEVELS=[
+    {n:"Základní plank", h:"Rovná záda, zpevněné břicho, nepropadat v bocích.", v:""},
+    {n:"Plank se zvedáním paže", h:"Střídavě odlepte ruku od země na dvě tři vteřiny.", v:"Zvedej střídavě paži."},
+    {n:"Plank se zvedáním nohy", h:"Střídavě zvedněte nataženou nohu, pánev nesmí rotovat.", v:"Zvedej střídavě nohu."},
+    {n:"Dlouhá páka", h:"Lokty posunuté před ramena. Nejtěžší varianta.", v:"Dlouhá páka."}
+  ];
+  function lvl(){return LEVELS[Math.min(Math.max((state.level||1)-1,0),LEVELS.length-1)];}
+  var STREAK_MIN=2;   /* kolik planků drží sérii dní */
 
   function $(id){return document.getElementById(id);}
   function show(id){["home","run","finish","guide"].forEach(function(s){$(s).classList.toggle("hidden",s!==id);});}
@@ -397,8 +478,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     try{var raw=localStorage.getItem(KEY);
       if(raw){var v=JSON.parse(raw);if(v&&typeof v.target==="number"){state=v;}}}
     catch(e){}
+    fixState();
+  }
+  function fixState(){
     if(typeof state.ready!=="number"||state.ready<5||state.ready>20){state.ready=10;}
     if(typeof state.voice!=="boolean"){state.voice=true;}
+    if(typeof state.level!=="number"||state.level<1||state.level>LEVELS.length){state.level=1;}
   }
   function save(){
     try{localStorage.setItem(KEY,JSON.stringify(state));}
@@ -406,10 +491,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
 
   function sessionByDay(){var m={};state.sessions.forEach(function(s){m[s.d]=s;});return m;}
+  /* den drží sérii, jen když jste zvládl aspoň STREAK_MIN planků */
+  function holds(s){return !!s&&(s.full||(s.done||0)>=STREAK_MIN);}
   function streak(){
     var m=sessionByDay(),n=0,d=new Date();
-    if(!m[todayStr(d)])d.setDate(d.getDate()-1);
-    while(m[todayStr(d)]){n++;d.setDate(d.getDate()-1);}
+    if(!holds(m[todayStr(d)]))d.setDate(d.getDate()-1);
+    while(holds(m[todayStr(d)])){n++;d.setDate(d.getDate()-1);}
     return n;}
   function personalRecord(){var pr=0;state.sessions.forEach(function(s){if(s.full&&s.t>pr)pr=s.t;});return pr;}
 
@@ -417,18 +504,21 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function renderHome(){
     var now=new Date();
     $("dateLbl").textContent=now.getDate()+". "+MONTHS[now.getMonth()];
-    var today=sessionByDay()[todayStr()],doneToday=!!today;
+    var today=sessionByDay()[todayStr()],ok=holds(today);
     var st=$("todayState");
     var cnt=today?(today.count||1):0;
-    st.textContent=doneToday?("Odcvičeno ✓"+(cnt>1?" ×"+cnt:"")):"Ještě necvičeno";
-    st.className="state "+(doneToday?"done":"todo");
-    $("startBtn").textContent=doneToday?"Cvičit znovu":"Začít cvičit";
-    $("addDayBtn").classList.toggle("hidden",doneToday);
+    st.textContent=ok?("Odcvičeno ✓"+(cnt>1?" ×"+cnt:""))
+      :(today?"Začato, nedokončeno":"Ještě necvičeno");
+    st.className="state "+(ok?"done":"todo");
+    $("startBtn").textContent=today?"Cvičit znovu":"Začít cvičit";
+    $("addDayBtn").classList.toggle("hidden",ok);
     $("streakNum").textContent=streak();
     $("totalNum").textContent=state.sessions.reduce(function(a,s){return a+(s.count||1);},0);
     var pr=personalRecord();$("prNum").textContent=pr>0?pr:"–";
     $("targetVal").textContent=state.target;
     $("readyVal").textContent=state.ready;
+    $("levelVal").textContent=state.level;
+    $("levelName").textContent=lvl().n;
     renderVoiceBtn();
     renderChart();
   }
@@ -440,13 +530,17 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     for(var i=13;i>=0;i--){var d=new Date();d.setDate(d.getDate()-i);
       var s=m[todayStr(d)];var val=s?(s.full?s.t:Math.round(s.t*s.done/3)):0;
       if(val>max)max=val;
-      days.push({val:val,full:s?s.full:false,dow:d.getDay(),count:s?(s.count||1):0});}
+      days.push({val:val,full:s?s.full:false,hold:holds(s),dow:d.getDay(),count:s?(s.count||1):0});}
     var W=300,H=110,bw=W/14;
     var svg='<svg viewBox="0 0 '+W+' '+(H+16)+'" width="100%" role="img" aria-label="Graf posledních 14 dní">';
     days.forEach(function(dd,i){
       var h=dd.val?Math.max(4,Math.round(dd.val/max*H)):2;
       var col=dd.val?(dd.full?"#F5A83C":"#F5A83C88"):"#24404788";
-      svg+='<rect x="'+(i*bw+3)+'" y="'+(H-h)+'" width="'+(bw-6)+'" height="'+h+'" rx="3" fill="'+col+'"/>';
+      var rect='<rect x="'+(i*bw+3)+'" y="'+(H-h)+'" width="'+(bw-6)+'" height="'+h+'" rx="3" ';
+      /* den, který sérii neudrží, je jen obrysem */
+      svg+=dd.val&&!dd.hold
+        ? rect+'fill="none" stroke="#F5A83C88" stroke-width="1.5"/>'
+        : rect+'fill="'+col+'"/>';
       if(dd.count>1){svg+='<text x="'+(i*bw+bw/2)+'" y="'+Math.max(9,H-h-4)+'" font-size="9" fill="#9FB3B0" text-anchor="middle">×'+dd.count+'</text>';}
       if(dd.dow===1){svg+='<text x="'+(i*bw+bw/2)+'" y="'+(H+13)+'" font-size="9" fill="#9FB3B0" text-anchor="middle">Po</text>';}
     });
@@ -480,14 +574,30 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     catch(e){}
   }
   if(voiceOK){pickVoice();try{speechSynthesis.onvoiceschanged=pickVoice;}catch(e){}}
-  function speak(txt){
+  function speak(txt,keep){
     if(!state.voice||!voiceOK||!txt)return;
     try{
-      speechSynthesis.cancel();
+      if(!keep){speechSynthesis.cancel();}
       var u=new SpeechSynthesisUtterance(txt);
       u.lang="cs-CZ";if(csVoice){u.voice=csVoice;}
       speechSynthesis.speak(u);
     }catch(e){}
+  }
+  function voiceOn(){return state.voice&&voiceOK;}
+
+  /* které vteřiny se v planku ohlásí — přizpůsobeno délce */
+  function workCues(d){
+    var c={},add=function(sec,txt){
+      if(sec<7||sec>d-10)return;                      /* ne do odpočtu, ne hned po startu */
+      for(var k in c){if(Math.abs(k-sec)<5)return;}    /* aspoň 5 s odstup */
+      c[sec]=txt;};
+    add(60,"Ještě minuta.");
+    add(30,"Ještě třicet.");
+    if(d>=20){add(Math.round(d/2),"Půlka.");}
+    if(d>=25){add(10,"Deset vteřin.");}
+    var CD=["Jedna","Dva","Tři","Čtyři","Pět"];        /* závěrečný odpočet vždy */
+    for(var i=5;i>=1;i--){if(i<d){c[i]=CD[i-1];}}
+    return c;
   }
   function quietVoice(){if(voiceOK){try{speechSynthesis.cancel();}catch(e){}}}
   function renderVoiceBtn(){
@@ -504,54 +614,96 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
   function unlockScreen(){try{if(wakeLock){wakeLock.release();wakeLock=null;}}catch(e){}}
   document.addEventListener("visibilitychange",function(){
-    if(document.visibilityState==="visible"&&running){lockScreen();}});
+    if(document.visibilityState==="visible"&&running&&!paused){lockScreen();}});
 
   /* ---- kolo ---- */
   function buildPhases(){
     var T=demo?5:state.target,Y=demo?3:state.ready,R=demo?5:60-state.ready,K=demo?5:30,P=demo?3:10;
+    var L=lvl(),lh=state.level>1?(" "+L.h):"",lv=L.v?(" "+L.v):"";
     return [
       {n:"Příprava",h:"Položte telefon a zaujměte polohu planku.",d:P,k:"prep",v:"Připrav se do planku."},
-      {n:"Plank 1/3",h:"Rovná záda, zpevněné břicho, nepropadat v bocích.",d:T,k:"work",v:"První plank. Rovná záda."},
+      {n:"Plank 1/3",h:"Rovná záda, zpevněné břicho, nepropadat v bocích."+lh,d:T,k:"work",v:"První plank. Rovná záda."+lv},
       {n:"Most",h:"Leh na zádech, 10× pomalu zvednout a spustit pánev.",d:R,k:"rest",v:"Most. Deset opakování."},
       {n:"Do polohy",h:"Otočte se a zaujměte polohu planku.",d:Y,k:"ready",v:"Otoč se do planku."},
-      {n:"Plank 2/3",h:"Dýchejte klidně, pohled do země.",d:T,k:"work",v:"Druhý plank."},
+      {n:"Plank 2/3",h:"Dýchejte klidně, pohled do země."+lh,d:T,k:"work",v:"Druhý plank."+lv},
       {n:"Bird-dog",h:"Vzpor klečmo, 5× natáhnout ruku a protilehlou nohu.",d:R,k:"rest",v:"Bird-dog. Pět na každou stranu."},
-      {n:"Do polohy",h:"Otočte se a zaujměte polohu planku.",d:Y,k:"ready",v:"Otoč se do planku."},
-      {n:"Plank 3/3",h:"Poslední série — vydržte.",d:T,k:"work",v:"Poslední plank. Vydrž."},
+      {n:"Do polohy",h:"Spusťte se na předloktí do planku.",d:Y,k:"ready",v:"Spusť se na předloktí."},
+      {n:"Plank 3/3",h:"Poslední série — vydržte."+lh,d:T,k:"work",v:"Poslední plank. Vydrž."+lv},
       {n:"Kobra",h:"Leh na břiše, zvednout hrudník, protáhnout břicho.",d:K,k:"stretch",v:"Kobra. Protáhni břicho."}
     ];
   }
-  var phases=[],pi=0,phaseEnd=0,totalDur=0,elapsedBefore=0,timer=null,running=false,planksDone=0,ticked={},demo=false;
+  var phases=[],pi=0,phaseEnd=0,totalDur=0,elapsedBefore=0,timer=null,running=false,
+      planksDone=0,ticked={},demo=false,paused=false,pauseLeft=0,cues={};
 
   function startWorkout(isDemo){
     demo=!!isDemo;
     if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
     if(actx&&actx.state==="suspended"){actx.resume();}
-    phases=buildPhases();pi=0;planksDone=0;running=true;
+    phases=buildPhases();pi=0;planksDone=0;running=true;paused=false;
     totalDur=phases.reduce(function(a,p){return a+p.d;},0);elapsedBefore=0;
+    $("pauseOverlay").classList.add("hidden");
     show("run");lockScreen();enterPhase();
     timer=setInterval(tick,200);
   }
-  function enterPhase(){
+
+  /* ---- pauza a návrat po přerušení ---- */
+  function pauseWorkout(){
+    if(!running||paused)return;
+    paused=true;
+    pauseLeft=Math.max(0,phaseEnd-Date.now());
+    if(timer){clearInterval(timer);timer=null;}
+    quietVoice();unlockScreen();
+    var p=phases[pi],s=Math.max(1,Math.ceil(pauseLeft/1000));
+    $("pauseInfo").innerHTML="<b>"+p.n+"</b>zbývá "+s+" s";
+    $("pauseOverlay").classList.remove("hidden");
+  }
+  function resumeWorkout(repeat){
+    if(!running||!paused)return;
+    var p=phases[pi];
+    if(!p.d0){p.d0=p.d;}
+    var remain=repeat?p.d0:Math.max(1,Math.ceil(pauseLeft/1000));
+    p.d=remain;
+    /* krátký náběh, než se vrátíte do polohy */
+    phases.splice(pi,0,{n:"Do polohy",h:"Vraťte se do polohy a pokračujte.",
+      d:(demo?3:state.ready),k:"ready",
+      v:(p.k==="work"?"Zpátky do planku.":"Zpátky do cvičení.")});
+    totalDur=elapsedBefore+phases.slice(pi).reduce(function(a,q){return a+q.d;},0);
+    paused=false;
+    $("pauseOverlay").classList.add("hidden");
+    if(actx&&actx.state==="suspended"){actx.resume();}
+    lockScreen();enterPhase(true);
+    timer=setInterval(tick,200);
+  }
+  document.addEventListener("visibilitychange",function(){
+    if(document.visibilityState==="hidden"&&running&&!paused){pauseWorkout();}});
+
+  function enterPhase(announce){
     var p=phases[pi];ticked={};
     phaseEnd=Date.now()+p.d*1000;
+    cues=(p.k==="work")?workCues(p.d):{};
     $("stepLbl").textContent=(demo?"Demo · ":"")+"Krok "+(pi+1)+" / "+phases.length;
     $("phaseName").textContent=p.n;
     $("phaseHint").textContent=p.h;
     var nx=phases[pi+1];
     $("nextLbl").innerHTML=nx?("Následuje: <b>"+nx.n+"</b>"):"Poslední krok";
     $("run").className="screen phase-"+p.k;
-    if(pi>0){if(p.k==="ready"){sndTurn();}else{sndPhase();}}
+    if(pi>0||announce){if(p.k==="ready"){sndTurn();}else{sndPhase();}}
     speak(p.v);
     $("bigTime").textContent=p.d;
   }
   function tick(){
+    if(paused)return;
     var left=Math.ceil((phaseEnd-Date.now())/1000);
     if(left<0)left=0;
     $("bigTime").textContent=left;
     var p=phases[pi];
-    var cd=(p.k==="ready")?5:3;
-    if(left<=cd&&left>=1&&!ticked[left]){ticked[left]=true;sndTick();}
+    if(p.k==="work"&&voiceOn()){
+      /* v planku mluví hlas, pípání mlčí */
+      if(cues[left]&&!ticked["v"+left]){ticked["v"+left]=true;speak(cues[left]);}
+    }else{
+      var cd=(p.k==="ready")?5:3;
+      if(left<=cd&&left>=1&&!ticked[left]){ticked[left]=true;sndTick();}
+    }
     $("horizonBar").style.width=((elapsedBefore+(p.d-left))/totalDur*100)+"%";
     if(left===0){
       if(p.k==="work"){planksDone++;}
@@ -568,7 +720,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     save();
   }
   function endWorkout(full){
-    clearInterval(timer);timer=null;running=false;unlockScreen();quietVoice();
+    if(timer){clearInterval(timer);timer=null;}
+    running=false;paused=false;unlockScreen();quietVoice();
+    $("pauseOverlay").classList.add("hidden");
     if(full){sndDone();}
     if(demo){
       $("finishSum").textContent="Demo dokončeno — do vaší historie se nic nezapsalo.";
@@ -579,7 +733,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     recordDay(state.target,planksDone,full&&planksDone>=3);
     $("finishSum").textContent = full
       ? "3× plank "+state.target+" s, most, bird-dog i kobra. Série pokračuje."
-      : "Uloženo: "+planksDone+" z 3 planků po "+state.target+" s.";
+      : ("Uloženo: "+planksDone+" z 3 planků po "+state.target+" s. "
+         +(planksDone>=STREAK_MIN?"Série pokračuje.":"Na udržení série chybí ještě jeden plank."));
     $("askBlock").classList.toggle("hidden",!full);
     $("suggestBlock").classList.add("hidden");
     show("finish");
@@ -601,9 +756,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       try{
         var v=JSON.parse(r.result);
         if(!v||typeof v.target!=="number"||!Array.isArray(v.sessions)){throw 0;}
-        state=v;
-        if(typeof state.ready!=="number"||state.ready<5||state.ready>20){state.ready=10;}
-        if(typeof state.voice!=="boolean"){state.voice=true;}
+        state=v;fixState();
         save();renderHome();say("Záloha načtena.");
       }catch(e){say("Soubor nejde přečíst — je to záloha Andrejky?");}
     };
@@ -625,15 +778,46 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   $("voiceBtn").addEventListener("click",function(){
     state.voice=!state.voice;renderVoiceBtn();save();
     if(state.voice){speak("Hlas je zapnutý.");}else{quietVoice();}});
+  /* co aplikace navrhne po třech „Ano" — do 45 s vteřiny, pak vyšší úroveň */
+  function nextStep(){
+    if(state.target<45){return {kind:"time",val:state.target+5};}
+    if(state.level<LEVELS.length){return {kind:"level",val:state.level+1};}
+    if(state.target<60){return {kind:"time",val:state.target+5};}
+    return null;
+  }
   $("okYes").addEventListener("click",function(){
     state.okStreak=(state.okStreak||0)+1;
     $("askBlock").classList.add("hidden");
-    if(state.okStreak>=3){$("suggestVal").textContent=state.target+5;$("suggestBlock").classList.remove("hidden");}
+    var s=state.okStreak>=3?nextStep():null;
+    if(s){
+      if(s.kind==="time"){
+        $("suggestText").textContent="Tři kola v pohodě za sebou — čas přidat.";
+        $("suggestBtn").textContent="Prodloužit na "+s.val+" s";
+      }else{
+        $("suggestText").textContent="Tři kola v pohodě za sebou. Delší plank už moc nepřidá — "
+          +"zkuste těžší variantu. Čas se vrátí na 30 s.";
+        $("suggestBtn").textContent="Přejít na "+LEVELS[s.val-1].n;
+      }
+      $("suggestBlock").classList.remove("hidden");
+    }
     save();});
   $("okNo").addEventListener("click",function(){
     state.okStreak=0;$("askBlock").classList.add("hidden");save();});
   $("suggestBtn").addEventListener("click",function(){
-    state.target+=5;state.okStreak=0;$("suggestBlock").classList.add("hidden");save();});
+    var s=nextStep();
+    if(s){
+      if(s.kind==="time"){state.target=s.val;}
+      else{state.level=s.val;state.target=30;}
+    }
+    state.okStreak=0;$("suggestBlock").classList.add("hidden");save();});
+  $("vMinus").addEventListener("click",function(){
+    if(state.level>1){state.level--;state.okStreak=0;renderHome();save();}});
+  $("vPlus").addEventListener("click",function(){
+    if(state.level<LEVELS.length){state.level++;state.okStreak=0;renderHome();save();}});
+  $("pauseBtn").addEventListener("click",function(){pauseWorkout();});
+  $("resumeBtn").addEventListener("click",function(){resumeWorkout(false);});
+  $("repeatBtn").addEventListener("click",function(){resumeWorkout(true);});
+  $("abortBtn").addEventListener("click",function(){endWorkout(false);});
   $("backBtn").addEventListener("click",function(){show("home");renderHome();});
   function openGuide(){show("guide");window.scrollTo(0,0);}
   function closeGuide(){show("home");renderHome();window.scrollTo(0,0);}
