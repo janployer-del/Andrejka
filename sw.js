@@ -3,7 +3,7 @@
    Ostatni soubory jdou hned z cache a na pozadi se obnovi.
    Bez site funguje vsechno z cache. */
 
-var CACHE = "andrejka-v2";
+var CACHE = "andrejka-v3";
 var FILES = ["./", "./index.html", "./manifest.json", "./icon-192.png", "./icon-512.png"];
 
 self.addEventListener("install", function (e) {
