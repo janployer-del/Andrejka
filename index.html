@@ -226,7 +226,7 @@
   </div>
 
   <div class="guide-body">
-    <p>Sestava zabere šest minut a posílí střed těla — břicho, hýždě a hluboké
+    <p>Sestava zabere šest a půl minuty a posílí střed těla — břicho, hýždě a hluboké
     svaly u páteře. Ty drží záda vzpřímená celý den. Na závěr si protáhneš přední
     stranu trupu a krk. Nepotřebuješ nic než kus koberce, židli
     a telefon položený vedle sebe.</p>
@@ -244,7 +244,7 @@
       <tr><td>7 · Přesun do planku</td><td class="t">10 s</td></tr>
       <tr class="w"><td>8 · Plank 3/3</td><td class="t">30 s</td></tr>
       <tr><td>9 · Kobra — protažení</td><td class="t">30 s</td></tr>
-      <tr><td>10 · Píďalka, 3 opakování</td><td class="t">20 s</td></tr>
+      <tr><td>10 · Píďalka, 3 opakování</td><td class="t">45 s</td></tr>
       <tr><td>11 · Přesun na židli</td><td class="t">15 s</td></tr>
       <tr><td>12 · Krk — otáčení</td><td class="t">25 s</td></tr>
       <tr><td>13 · Krk — předklon a záklon</td><td class="t">25 s</td></tr>
@@ -327,7 +327,7 @@
     <p>Navazuje na kobru. Spusť se na <b>předloktí do sfingy</b> — lokty pod rameny, boky
     na zemi. Odtud vysaď pánev vzhůru a dozadu, tělo udělá stříšku a paty se tlačí k zemi.
     Pak se plynule přesuň zpátky dopředu na předloktí. Tam a zpět je jedno opakování,
-    dělají se tři.</p>
+    dělají se tři. Nespěchej — na fázi máš 45 vteřin.</p>
     <div class="tip"><b>Tempo:</b> pohyb plyne, píďalka se nikam nežene. Když tahá zadní
     strana stehen, pokrč mírně kolena — protahuješ záda, ne hamstringy.</div>
 
@@ -481,7 +481,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.3.0";
+  var VERSION="1.3.1";
   var VERSION_DATE="27. 8. 2026";
   var state={target:30, ready:10, level:1, voice:true, okStreak:0, sessions:[]};
 
@@ -647,7 +647,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* ---- kolo ---- */
   function buildPhases(){
     var T=demo?5:state.target,Y=demo?3:state.ready,R=demo?5:60-state.ready,K=demo?5:30,P=demo?3:10;
-    var PID=demo?5:20,CHR=demo?3:15,NCK=demo?5:25;
+    var PID=demo?5:45,CHR=demo?3:15,NCK=demo?5:25;
     var L=lvl(),lh=state.level>1?(" "+L.h):"",lv=L.v?(" "+L.v):"";
     return [
       {n:"Příprava",h:"Položte telefon a zaujměte polohu planku.",d:P,k:"prep",v:"Připrav se do planku."},
@@ -900,7 +900,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   $("shareSysBtn").addEventListener("click",function(){
     if(navigator.share){
       navigator.share({title:"Andrejka",
-        text:"Ranní plank — šestiminutová sestava na střed těla a protažení. Návod na cviky je přímo v aplikaci.",
+        text:"Ranní plank — krátká sestava na střed těla a protažení. Návod na cviky je přímo v aplikaci.",
         url:APP_URL})
         .then(closeShare,function(){});
     }
