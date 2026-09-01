@@ -240,7 +240,7 @@
       <tr><td>3 · Most — pomalá opakování</td><td class="t">50 s</td></tr>
       <tr><td>4 · Přesun do planku</td><td class="t">10 s</td></tr>
       <tr class="w"><td>5 · Plank 2/3</td><td class="t">30 s</td></tr>
-      <tr><td>6 · Bird-dog — střídání po 5 s</td><td class="t">50 s</td></tr>
+      <tr><td>6 · Bird-dog — 4 polohy po 12 s</td><td class="t">50 s</td></tr>
       <tr><td>7 · Přesun do planku</td><td class="t">10 s</td></tr>
       <tr class="w"><td>8 · Plank 3/3</td><td class="t">30 s</td></tr>
       <tr><td>9 · Kobra — protažení</td><td class="t">15 s</td></tr>
@@ -311,9 +311,9 @@
 
     <h3>Bird-dog</h3>
     <p>Vzpor klečmo: ruce pod rameny, kolena pod boky, záda rovná. Natáhni
-    <b>pravou ruku a levou nohu</b> do jedné přímky s tělem a <b>vydrž pět vteřin</b>. Pak
-    vystřídej — hlas ti střídání odpočítá. Vyjdou z toho zhruba tři polohy na každou
-    stranu, což je v padesáti vteřinách přesně tak akorát.</p>
+    <b>pravou ruku a levou nohu</b> do jedné přímky s tělem a drž, dokud hlas
+    neřekne vystřídej. Jsou to <b>čtyři polohy po dvanácti vteřinách</b>, dvě na každou
+    stranu — míň opakování, delší výdrž. O počet se nestarej, tempo hlídá hlas.</p>
     <div class="tip"><b>Klíčové:</b> pánev se nesmí naklánět do strany. Představ si, že máš
     na kříži postavenou skleničku vody. Radši nižší rozsah a stabilní pánev než vysoko
     zvednutá noha.</div>
@@ -367,7 +367,9 @@
     zbytek fáze), <b>Zopakovat tuto fázi</b> (když ti mezitím vychladla) nebo
     <b>Ukončit</b>. V obou případech nejdřív dostaneš odpočet, aby ses stihl vrátit
     do polohy.</p>
-    <p>Po cvičení se aplikace zeptá, jestli to bylo zvládnutelné. Odpovídej upřímně:
+    <p>Na konci sestavy tě Andrejka pochválí a připomene, kolik dní v řadě už máš —
+    věta se pokaždé trochu liší a u kulatých čísel je zvláštní. Pak se zeptá, jestli to
+    bylo zvládnutelné. Odpovídej upřímně:
     <b>po třech „Ano" za sebou</b> ti sama nabídne posun — do 45 vteřin delší plank,
     pak vyšší úroveň. Když ťukneš na „Bylo to těžké", počítadlo se vynuluje
     a nabízení přestane.</p>
@@ -484,8 +486,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.4.0";
-  var VERSION_DATE="31. 8. 2026";
+  var VERSION="1.5.0";
+  var VERSION_DATE="1. 9. 2026";
   var state={target:30, ready:10, level:1, voice:true, okStreak:0, sessions:[]};
 
   /* úrovně planku — progres obtížností místo nekonečných vteřin */
@@ -651,11 +653,47 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(d>=20){c[10]="Poslední zvednutí.";}
     return c;
   }
-  /* bird-dog: hlas odpocita stridani po osmi vterinach */
+  /* bird-dog: ctyri polohy po dvanacti vterinach, dve na kazdou stranu */
   function dogCues(d){
-    var c={},t=["Vystřídej.","Vystřídej.","Půlka, vystřídej.","Vystřídej.","Poslední strana, vystřídej."],i=0;
-    for(var left=d-8;left>=8&&i<t.length;left-=8){c[left]=t[i++];}
+    var c={},t=["Vystřídej.","Půlka, vystřídej.","Poslední strana, vystřídej."],i=0;
+    for(var left=d-12;left>=10&&i<t.length;left-=12){c[left]=t[i++];}
     return c;
+  }
+  /* zaverecna pochvala - obmenuje se, at nezni porad stejne */
+  var PRAISE=[
+    "Máš to za sebou. Dneska sis vedl fakt dobře.",
+    "Sestava kompletní. Jsi fakt dobrej.",
+    "Hotovo a poctivě. Takhle se to dělá.",
+    "A je to. Zase o kousek silnější.",
+    "Dobrá práce. Střed těla ti za to poděkuje.",
+    "Hotovo. Ráno, které za něco stálo."
+  ];
+  var STREAKS=[
+    "Už máš § v řadě.",
+    "To je § v řadě. Nepřetrhni to.",
+    "§ v řadě a pořád to drží.",
+    "§ v řadě — jde ti to."
+  ];
+  var MILESTONES={
+    7:"Sedm dní v řadě! Celý týden bez výmluvy.",
+    14:"Čtrnáct dní v řadě! Dva týdny v kuse.",
+    21:"Dvacet jedna dní v řadě! Tři týdny — to už je návyk.",
+    30:"Třicet dní v řadě! To už není náhoda.",
+    50:"Padesát dní v řadě! Klobouk dolů.",
+    100:"Sto dní v řadě! Stovka je stovka."
+  };
+  var lastPraise=-1,lastStreak=-1;
+  function pickFrom(a,skip){
+    var i=Math.floor(Math.random()*a.length);
+    if(a.length>1&&i===skip){i=(i+1)%a.length;}
+    return i;
+  }
+  function dayWord(n){return n===1?"den":(n<5?"dny":"dní");}
+  function streakLine(n){
+    if(n<2){return "";}
+    if(MILESTONES[n]){return MILESTONES[n];}
+    lastStreak=pickFrom(STREAKS,lastStreak);
+    return STREAKS[lastStreak].replace("§",n+" "+dayWord(n));
   }
   function quietVoice(){sayGen++;if(sayTimer){clearTimeout(sayTimer);sayTimer=null;}if(voiceOK){try{speechSynthesis.cancel();}catch(e){}}}
   function renderVoiceBtn(){
@@ -685,7 +723,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       {n:"Most",h:"Leh na zádech, pomalu zvedat a spouštět pánev, nahoře stisknout hýždě.",d:R,k:"rest",c:mostCues,v:"Most. Leh na záda, paty pod kolena. Zvedej pánev pomalu a nahoře vždycky stiskni hýždě."},
       {n:"Do polohy",h:"Otočte se a zaujměte polohu planku.",d:Y,k:"ready",v:"Otoč se do planku."},
       {n:"Plank 2/3",h:"Dýchejte klidně, pohled do země."+lh,d:T,k:"work",tip:"Táhni lokty k patám, ať se zapojí záda.",v:"Druhý plank. Dýchej klidně."+lv},
-      {n:"Bird-dog",h:"Vzpor klečmo, střídat ruku a protilehlou nohu, v poloze vydržet 5 s.",d:R,k:"rest",c:dogCues,v:"Bird-dog. Vzpor klečmo, natáhni pravou ruku a levou nohu. Vydrž pět vteřin, pak vystřídej."},
+      {n:"Bird-dog",h:"Vzpor klečmo, střídat ruku a protilehlou nohu, držet do pokynu.",d:R,k:"rest",c:dogCues,v:"Bird-dog. Vzpor klečmo, natáhni pravou ruku a levou nohu. Drž ji, dokud neřeknu vystřídej."},
       {n:"Do polohy",h:"Spusťte se na předloktí do planku.",d:Y,k:"ready",v:"Spusť se na předloktí."},
       {n:"Plank 3/3",h:"Poslední série — vydrž, jsi nejlepší!"+lh,d:T,k:"work",tip:"Zpevni všechno a dýchej.",v:["Poslední plank.",900,"Vydrž.",800,"Jsi nejlepší!"+lv]},
       {n:"Kobra",h:"Leh na břiše, zvednout hrudník, protáhnout břicho.",d:K,k:"stretch",v:"Kobra. Protáhni břicho."},
@@ -791,6 +829,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(demo){
       $("finishSum").textContent="Demo dokončeno — do vaší historie se nic nezapsalo.";
       $("askBlock").classList.add("hidden");$("suggestBlock").classList.add("hidden");
+      speak([900,"Demo dokončeno."]);
       show("finish");return;
     }
     if(planksDone===0){show("home");renderHome();return;}
@@ -799,6 +838,18 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       ? "3× plank "+state.target+" s, most, bird-dog, kobra, píďalka i protažení krku. Série pokračuje."
       : ("Uloženo: "+planksDone+" z 3 planků po "+state.target+" s. "
          +(planksDone>=STREAK_MIN?"Série pokračuje.":"Na udržení série chybí ještě jeden plank."));
+    /* hlas na závěr: pochvala a série dní */
+    var line=[1200];
+    if(full){
+      lastPraise=pickFrom(PRAISE,lastPraise);
+      line.push("Hotovo!",700,PRAISE[lastPraise]);
+    }else{
+      line.push("Uloženo: "+planksDone+" ze tří planků.",600,
+        planksDone>=STREAK_MIN?"Série drží.":"Zítra to dotáhneš.");
+    }
+    var sl=streakLine(streak());
+    if(sl){line.push(700,sl);}
+    speak(line);
     $("askBlock").classList.toggle("hidden",!full);
     $("suggestBlock").classList.add("hidden");
     show("finish");
