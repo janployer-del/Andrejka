@@ -226,7 +226,7 @@
   </div>
 
   <div class="guide-body">
-    <p>Sestava zabere šest minut a posílí střed těla — břicho, hýždě a hluboké
+    <p>Sestava zabere necelých sedm minut a posílí střed těla — břicho, hýždě a hluboké
     svaly u páteře. Ty drží záda vzpřímená celý den. Na závěr si protáhneš přední
     stranu trupu a krk. Nepotřebuješ nic než kus koberce, židli
     a telefon položený vedle sebe.</p>
@@ -245,21 +245,23 @@
       <tr class="w"><td>8 · Plank 3/3</td><td class="t">30 s</td></tr>
       <tr><td>9 · Kobra — protažení</td><td class="t">15 s</td></tr>
       <tr><td>10 · Píďalka, 3 opakování</td><td class="t">45 s</td></tr>
-      <tr><td>11 · Přesun na židli</td><td class="t">15 s</td></tr>
-      <tr><td>12 · Krk — otáčení</td><td class="t">25 s</td></tr>
-      <tr><td>13 · Krk — předklon a záklon</td><td class="t">25 s</td></tr>
-      <tr><td>14 · Krk — úklony</td><td class="t">25 s</td></tr>
+      <tr><td>11 · Kočka, 4 vytočení</td><td class="t">45 s</td></tr>
+      <tr><td>12 · Přesun na židli</td><td class="t">15 s</td></tr>
+      <tr><td>13 · Krk — otáčení</td><td class="t">25 s</td></tr>
+      <tr><td>14 · Krk — předklon a záklon</td><td class="t">25 s</td></tr>
+      <tr><td>15 · Krk — úklony</td><td class="t">25 s</td></tr>
     </table>
     <p>Před každým plankem máš deset vteřin na přesun. Po mostu se převaluješ ze zad,
     po bird-dogu už klečíš na čtyřech a jen se spustíš na předloktí — hlas ti pokaždé
     řekne, co přesně udělat. Konec cviku ohlásí <b>dvojité pípnutí zdola nahoru</b>.
-    Sestavu na zemi uzavírá kobra a píďalka, pak se přesuneš na židli a protáhneš krk.
+    Sestavu na zemi uzavírá kobra, píďalka a kočka, pak se přesuneš na židli
+    a protáhneš krk.
     Časy jdou nastavit, tohle je výchozí sestava.</p>
     <p>Hlas tě provází celou sestavou — u každého cviku řekne, jak ho provést,
     v planku ohlásí půlku, deset vteřin a odpočítá posledních pět, u mostu hlídá tempo
     a u bird-dogu odpočítá střídání stran. Když hlas vypneš, konce fází místo toho pípnou.</p>
 
-    <h2>Šest cviků</h2>
+    <h2>Sedm cviků</h2>
 
     <h3>Plank</h3>
     <p>Opři se o předloktí, <b>lokty přesně pod rameny</b>. Tělo tvoří jednu přímku od hlavy
@@ -333,6 +335,13 @@
     dělají se tři. Nespěchej — na fázi máš 45 vteřin.</p>
     <div class="tip"><b>Tempo:</b> pohyb plyne, píďalka se nikam nežene. Když tahá zadní
     strana stehen, pokrč mírně kolena — protahuješ záda, ne hamstringy.</div>
+
+    <h3>Kočka</h3>
+    <p>Vzpor klečmo: ruce pod rameny, kolena pod boky. Zvedni jednu ruku a <b>vytoč se
+    za ní</b> — hrudník se otevře do strany, pohled jde za rukou. Chvilku vydrž a plynule
+    zpátky, pak druhou rukou. Čtyři vytočení, dvě na každou stranu, hlas střídání ohlásí.</p>
+    <div class="tip"><b>Pohyb vede hrudník, ne bedra.</b> Pánev zůstává na místě
+    a rovnoběžně se zemí — otáčí se hrudní páteř. Radši menší rozsah a klidný dech.</div>
 
     <h3>Protažení krku</h3>
     <p>Poslední blok už sedíš na židli. Seď vzpřímeně, chodidla na zemi, <b>ramena táhni
@@ -486,8 +495,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.5.0";
-  var VERSION_DATE="1. 9. 2026";
+  var VERSION="1.6.0";
+  var VERSION_DATE="6. 9. 2026";
   var state={target:30, ready:10, level:1, voice:true, okStreak:0, sessions:[]};
 
   /* úrovně planku — progres obtížností místo nekonečných vteřin */
@@ -659,6 +668,12 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     for(var left=d-12;left>=10&&i<t.length;left-=12){c[left]=t[i++];}
     return c;
   }
+  /* kocka: ctyri vytoceni po jedenacti vterinach, dve na kazdou stranu */
+  function catCues(d){
+    var c={},t=["Zpátky a druhou rukou.","A vystřídej.","Poslední strana."],i=0;
+    for(var left=d-11;left>=10&&i<t.length;left-=11){c[left]=t[i++];}
+    return c;
+  }
   /* zaverecna pochvala - obmenuje se, at nezni porad stejne */
   var PRAISE=[
     "Máš to za sebou. Dneska sis vedl fakt dobře.",
@@ -715,19 +730,20 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* ---- kolo ---- */
   function buildPhases(){
     var T=demo?5:state.target,Y=demo?3:state.ready,R=demo?5:60-state.ready,K=demo?5:15,P=demo?3:10;
-    var PID=demo?5:45,CHR=demo?3:15,NCK=demo?5:25;
+    var PID=demo?5:45,KOC=demo?5:45,CHR=demo?3:15,NCK=demo?5:25;
     var L=lvl(),lh=state.level>1?(" "+L.h):"",lv=L.v?(" "+L.v):"";
     return [
       {n:"Příprava",h:"Položte telefon a zaujměte polohu planku.",d:P,k:"prep",v:"Připrav se do planku. Lokty pod rameny, tělo v přímce."},
-      {n:"Plank 1/3",h:"Rovná záda, zpevněné břicho, nepropadat v bocích."+lh,d:T,k:"work",tip:"Stiskni hýždě a podsaď pánev.",v:"První plank. Rovná záda, břicho zpevni."+lv},
+      {n:"Plank 1/3",h:"Rovná záda, zpevněné břicho, nepropadat v bocích."+lh,d:T,k:"work",tip:"Propni kolena, vytáhni se za patama.",v:"První plank. Rovná záda, břicho zpevni."+lv},
       {n:"Most",h:"Leh na zádech, pomalu zvedat a spouštět pánev, nahoře stisknout hýždě.",d:R,k:"rest",c:mostCues,v:"Most. Leh na záda, paty pod kolena. Zvedej pánev pomalu a nahoře vždycky stiskni hýždě."},
       {n:"Do polohy",h:"Otočte se a zaujměte polohu planku.",d:Y,k:"ready",v:"Otoč se do planku."},
-      {n:"Plank 2/3",h:"Dýchejte klidně, pohled do země."+lh,d:T,k:"work",tip:"Táhni lokty k patám, ať se zapojí záda.",v:"Druhý plank. Dýchej klidně."+lv},
+      {n:"Plank 2/3",h:"Dýchejte klidně, pohled do země."+lh,d:T,k:"work",tip:"Táhni lokty do dálky, ať se zapojí záda.",v:"Druhý plank. Dýchej klidně."+lv},
       {n:"Bird-dog",h:"Vzpor klečmo, střídat ruku a protilehlou nohu, držet do pokynu.",d:R,k:"rest",c:dogCues,v:"Bird-dog. Vzpor klečmo, natáhni pravou ruku a levou nohu. Drž ji, dokud neřeknu vystřídej."},
       {n:"Do polohy",h:"Spusťte se na předloktí do planku.",d:Y,k:"ready",v:"Spusť se na předloktí."},
       {n:"Plank 3/3",h:"Poslední série — vydrž, jsi nejlepší!"+lh,d:T,k:"work",tip:"Zpevni všechno a dýchej.",v:["Poslední plank.",900,"Vydrž.",800,"Jsi nejlepší!"+lv]},
       {n:"Kobra",h:"Leh na břiše, zvednout hrudník, protáhnout břicho.",d:K,k:"stretch",v:"Kobra. Protáhni břicho."},
       {n:"Píďalka",h:"Z kobry na předloktí do sfingy. Vysadit pánev vzhůru a dozadu, pak zpátky dopředu. Třikrát.",d:PID,k:"stretch",v:"Píďalka. Z kobry na předloktí, vysaď pánev vzhůru a zpátky dopředu. Třikrát."},
+      {n:"Kočka",h:"Vzpor klečmo. Zvednout ruku, vytočit se za ní, chvíli vydržet, pak druhou.",d:KOC,k:"stretch",c:catCues,v:"Kočka. Vzpor klečmo. Zvedni pravou ruku, vytoč se za ní a chvilku vydrž."},
       {n:"Přesun na židli",h:"Postavte se a sedněte si na židli.",d:CHR,k:"ready",v:"Přesuň se prosím na židli."},
       {n:"Krk — otáčení",h:"Otáčet hlavu vlevo a vpravo, v krajní poloze chvíli vydržet. 4× na každou stranu.",d:NCK,k:"stretch",v:"Otáčej hlavu vlevo a vpravo, v krajní poloze vydrž."},
       {n:"Krk — předklon a záklon",h:"Bradu na hrudník, pak hlavu mírně dozadu. 4 pomalé cykly.",d:NCK,k:"stretch",v:"Bradu na hrudník, pak hlavu mírně dozadu."},
@@ -835,7 +851,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(planksDone===0){show("home");renderHome();return;}
     recordDay(state.target,planksDone,full&&planksDone>=3);
     $("finishSum").textContent = full
-      ? "3× plank "+state.target+" s, most, bird-dog, kobra, píďalka i protažení krku. Série pokračuje."
+      ? "3× plank "+state.target+" s, most, bird-dog, kobra, píďalka, kočka i protažení krku. Série pokračuje."
       : ("Uloženo: "+planksDone+" z 3 planků po "+state.target+" s. "
          +(planksDone>=STREAK_MIN?"Série pokračuje.":"Na udržení série chybí ještě jeden plank."));
     /* hlas na závěr: pochvala a série dní */
