@@ -40,6 +40,9 @@
   .startbtn{display:block;width:100%;border:none;border-radius:18px;cursor:pointer;
     background:var(--dawn);color:#231604;font-size:22px;font-weight:700;padding:22px;margin:4px 0 8px}
   .startbtn:active{transform:scale(.985)}
+  .gymbtn{display:block;width:100%;border:1px solid var(--line);border-radius:16px;cursor:pointer;
+    background:var(--mist);color:var(--bone);font-size:17px;font-weight:600;padding:16px;margin:0 0 8px}
+  .gymbtn:active{transform:scale(.985)}
   .ghost{background:transparent;border:none;color:var(--dim);font-size:15px;text-decoration:underline;cursor:pointer}
   .ghostrow{display:block;width:100%;margin:0 0 22px;padding:8px}
   .target-row{display:flex;align-items:center;justify-content:space-between;background:var(--mist);
@@ -161,6 +164,7 @@
   </div>
 
   <button class="startbtn" id="startBtn">Začít cvičit</button>
+  <button class="gymbtn" id="gymBtn">Protažení po posilovně</button>
   <button class="ghost ghostrow" id="demoBtn">Spustit demo — nic se neukládá</button>
 
   <div class="target-row">
@@ -356,10 +360,54 @@
     <div class="tip"><b>Nekruž hlavou dokola.</b> Krční páteři to nesvědčí. Do záklonu jdi
     jen do mírného rozsahu — nikdy do maxima a nikdy švihem.</div>
 
+    <h2>Protažení po posilovně</h2>
+    <p>Druhá sestava, kterou spustíš tlačítkem na úvodní obrazovce. Je to čisté
+    protažení po tréninku — potřebuješ k ní <b>žebřiny</b> a kus volné zdi. Trvá
+    šest a půl minuty a hlas tě jí provede stejně jako ranním cvičením.</p>
+    <table class="steps">
+      <tr><td>1 · Příprava — postav se ke zdi</td><td class="t">10 s</td></tr>
+      <tr><td>2 · Palec o zeď, střídavě nohy</td><td class="t">50 s</td></tr>
+      <tr><td>3 · Přesun k žebřinám</td><td class="t">15 s</td></tr>
+      <tr><td>4 · Lýtka a Achillovka</td><td class="t">60 s</td></tr>
+      <tr><td>5 · Tříslo a zadní stehno — pravá</td><td class="t">25 s</td></tr>
+      <tr><td>6 · Tříslo a zadní stehno — levá</td><td class="t">25 s</td></tr>
+      <tr><td>7 · Písmeno C — boční protažení trupu</td><td class="t">45 s</td></tr>
+      <tr><td>8 · Vis na žebřinách</td><td class="t">30 s</td></tr>
+      <tr><td>9 · Prověšení hrudníku o lokty</td><td class="t">40 s</td></tr>
+      <tr><td>10 · Vnitřní strana nohy — pravá</td><td class="t">25 s</td></tr>
+      <tr><td>11 · Vnitřní strana nohy — levá</td><td class="t">25 s</td></tr>
+      <tr><td>12 · Předklon rozkročný</td><td class="t">45 s</td></tr>
+    </table>
+    <ul>
+      <li><b>Palec o zeď</b> — chodidlo u zdi, palec opřený o zeď a tím vytažený nahoru
+      do dorzální flexe. Šest výdrží, tři na každou nohu.</li>
+      <li><b>Lýtka a Achillovka</b> — stoj na spodní šprusli, ruce nahoře. Paty pomalu
+      dolů, pak do výponu a brzděně zase dolů. Jde to i ze schodu. V botách to tolik
+      netlačí na palec.</li>
+      <li><b>Tříslo a zadní stehno</b> — přední noha na co nejvyšší příčku, zadní opřená
+      o zem a propnutá v koleni. Nohy v ose na šířku boků, špičky dopředu, stojná noha
+      pevná a vytažená nahoru, ruce v bok, aby záda nebyla kulatá.</li>
+      <li><b>Písmeno C</b> — bokem k žebřinám, úchop ve výšce hlavy, úklon od nich.
+      Bok jde do strany, tělo tvoří písmeno C. Dýchej do žeber na vypouklé straně.</li>
+      <li><b>Vis</b> — zády k žebřinám, nejvyšší příčka, palec kolem ní. Zavěsit se tak,
+      aby nohy nedosáhly na zem, a pustit tělo. Trakce protáhne celý trup.</li>
+      <li><b>Prověšení hrudníku</b> — lokty na šprusli, odstup půl metru, zavěsit se do
+      loktů a nechat hrudník klesnout. Mezi lopatkami se prohnout, ne kulatit.</li>
+      <li><b>Vnitřní strana nohy</b> — bokem k žebřinám, nohu zavěsit za šprusli
+      a protahovat vnitřní stranu.</li>
+      <li><b>Předklon rozkročný</b> — čelem k žebřinám, předklon z kyčlí, rukama putovat
+      po příčkách níž a níž. Kolena propnutá, sedací hrboly ke stropu, rovná záda.
+      Širší rozkročení zabere víc i vnitřní stranu.</li>
+    </ul>
+    <div class="tip"><b>Nic se nezapisuje.</b> Série dní, rekord i graf patří jen rannímu
+    cvičení. Po posilovně jde o protažení, ne o výkon.</div>
+
     <h2>Ovládání</h2>
     <ul>
       <li><b>Začít cvičit</b> spustí kolo. Odlož telefon vedle sebe displejem nahoru —
       zvuk musí být zapnutý, jinak přijdeš o hlas i pípání.</li>
+      <li><b>Protažení po posilovně</b> spustí druhou sestavu. Nezapisuje se z ní nic —
+      série dní, rekord ani graf se jí netýkají.</li>
       <li><b>Spustit demo</b> projde celou sestavu ve zrychlení, každý krok pár vteřin.
       Nic se neuloží. Vyzkoušej si to napoprvé, ať víš, co čekat.</li>
       <li><b>Délka planku</b> — začni na 20 nebo 30 vteřinách. Špatně provedená minuta
@@ -495,8 +543,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.6.0";
-  var VERSION_DATE="6. 9. 2026";
+  var VERSION="1.7.0";
+  var VERSION_DATE="10. 9. 2026";
   var state={target:30, ready:10, level:1, voice:true, okStreak:0, sessions:[]};
 
   /* úrovně planku — progres obtížností místo nekonečných vteřin */
@@ -750,14 +798,67 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       {n:"Krk — úklony",h:"Ucho k rameni, vydržet, pak na druhou stranu. 4× na každou stranu.",d:NCK,k:"stretch",v:"Ucho k rameni, vydrž, pak na druhou stranu."}
     ];
   }
-  var phases=[],pi=0,phaseEnd=0,totalDur=0,elapsedBefore=0,timer=null,running=false,
-      planksDone=0,ticked={},demo=false,paused=false,pauseLeft=0,cues={};
+  /* pokyny zadané od začátku fáze; záporné číslo = zbývající vteřiny */
+  function fromStart(list){
+    return function(d){
+      var c={};
+      for(var i=0;i<list.length;i++){
+        var left=list[i][0]>=0?d-list[i][0]:-list[i][0];
+        if(left>=4&&!c[left]){c[left]=list[i][1];}
+      }
+      return c;
+    };
+  }
 
-  function startWorkout(isDemo){
-    demo=!!isDemo;
+  /* druhá sestava — protažení po posilovně; nic se nezapisuje do historie */
+  function buildGym(){
+    var s=function(v){return demo?5:v;};
+    return [
+      {n:"Příprava",h:"Postavte se ke zdi.",d:demo?3:10,k:"prep",
+       v:"Protažení po posilovně. Postav se ke zdi."},
+      {n:"Palec o zeď",h:"Chodidlo u zdi, palec opřený o zeď, protahovat nahoru. Střídat nohy.",d:s(50),k:"stretch",
+       c:fromStart([[8,"Vystřídej."],[16,"Vystřídej."],[24,"Půlka, vystřídej."],[32,"Vystřídej."],[40,"Poslední, vystřídej."]]),
+       v:"Palec o zeď. Chodidlo u zdi, palec opřený o zeď a protáhnout nahoru. Začni pravou."},
+      {n:"Přesun k žebřinám",h:"Přejděte k žebřinám.",d:demo?3:15,k:"ready",
+       v:"Přejdi k žebřinám."},
+      {n:"Lýtka a Achillovka",h:"Stoj na spodní šprusli. Paty pomalu dolů, pak výpon a brzděně zpět.",d:s(60),k:"stretch",
+       c:fromStart([[15,"Dolů pomalu, nahoře výpon."],[30,"Půlka. Brzdi pohyb dolů."],[45,"Ještě dvakrát."],[-10,"Poslední."]]),
+       v:"Lýtka. Stoupni si na spodní šprusli a chyť se nahoře. Paty pomalu dolů, pak do výponu a brzděně zpátky."},
+      {n:"Tříslo — pravá",h:"Pravá noha na vysokou příčku, zadní noha propnutá v koleni.",d:s(25),k:"stretch",
+       c:fromStart([[10,"Ruce v bok, rovná záda, dýchej."]]),
+       v:"Pravou nohu na co nejvyšší příčku a chyť se žebřin. Zadní nohu propni v koleni, hýždě pevné, vytáhni se nahoru."},
+      {n:"Tříslo — levá",h:"Levá noha na vysokou příčku, zadní noha propnutá v koleni.",d:s(25),k:"stretch",
+       c:fromStart([[10,"Vytáhni se nahoru, rovná záda, dýchej."]]),
+       v:"Vystřídej. Levou nohu nahoru, zadní nohu propni, hýždě pevné."},
+      {n:"Písmeno C",h:"Bokem k žebřinám, úklon od nich. Z těla udělat písmeno C.",d:s(45),k:"stretch",
+       c:fromStart([[11,"Otoč se, druhá strana."],[22,"Zpátky na první stranu."],[33,"Poslední, otoč se."]]),
+       v:"Písmeno C. Bokem k žebřinám, chyť se ve výšce hlavy a ukloň se od nich. Dýchej do žeber."},
+      {n:"Vis",h:"Zády k žebřinám, chytit nejvyšší příčku a nechat viset.",d:s(30),k:"stretch",
+       c:fromStart([[8,"Visíš. Dýchej, počítám."],[13,"Pět."],[18,"Deset."],[23,"Patnáct. Pomalu dolů."]]),
+       v:"Vis. Zády k žebřinám, chyť se nejvyšší příčky, palec kolem příčky. Zavěs se a pusť tělo."},
+      {n:"Prověšení hrudníku",h:"Lokty na šprusli, odstoupit půl metru, nechat prověsit hrudník.",d:s(40),k:"stretch",
+       c:fromStart([[12,"Dýchej. Mezi lopatkami prohnout, ne kulatit."],[25,"Ještě chvíli, dýchej do hrudníku."]]),
+       v:"Lokty na šprusli, odstup půl metru. Zavěs se do loktů a nech prověsit hrudník."},
+      {n:"Vnitřní strana — pravá",h:"Pravou nohu zavěsit za šprusli, protahovat vnitřní stranu.",d:s(25),k:"stretch",
+       c:fromStart([[12,"Povol a znovu. Dýchej."]]),
+       v:"Bokem k žebřinám. Pravou nohu zavěs za šprusli a protáhni vnitřní stranu."},
+      {n:"Vnitřní strana — levá",h:"Levou nohu zavěsit za šprusli, protahovat vnitřní stranu.",d:s(25),k:"stretch",
+       c:fromStart([[12,"Povol a znovu. Dýchej."]]),
+       v:"Otoč se. Levou nohu za šprusli."},
+      {n:"Předklon rozkročný",h:"Rozkročný stoj, předklon z kyčlí, rukama putovat po žebřinách níž.",d:s(45),k:"stretch",
+       c:fromStart([[15,"Rukama níž. Rovná záda, dýchej."],[30,"Ještě níž, pokud tě to pustí."],[-8,"Pomalu se zvedni."]]),
+       v:"Předklon. Rozkroč se čelem k žebřinám, předkloň se z kyčlí a chyť se. Kolena propnutá, sedací hrboly ke stropu."}
+    ];
+  }
+
+  var phases=[],pi=0,phaseEnd=0,totalDur=0,elapsedBefore=0,timer=null,running=false,
+      planksDone=0,ticked={},demo=false,gym=false,paused=false,pauseLeft=0,cues={};
+
+  function startWorkout(isDemo,isGym){
+    demo=!!isDemo;gym=!!isGym;
     if(!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)();}catch(e){}}
     if(actx&&actx.state==="suspended"){actx.resume();}
-    phases=buildPhases();pi=0;planksDone=0;running=true;paused=false;
+    phases=gym?buildGym():buildPhases();pi=0;planksDone=0;running=true;paused=false;
     totalDur=phases.reduce(function(a,p){return a+p.d;},0);elapsedBefore=0;
     $("pauseOverlay").classList.add("hidden");
     show("run");lockScreen();enterPhase();
@@ -848,6 +949,15 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       speak([900,"Demo dokončeno."]);
       show("finish");return;
     }
+    if(gym){
+      /* protažení po posilovně se nikam nezapisuje */
+      $("finishSum").textContent=full
+        ? "Protažení po posilovně hotové. Do historie se nic nezapisuje."
+        : "Protažení ukončeno. Do historie se nic nezapisuje.";
+      $("askBlock").classList.add("hidden");$("suggestBlock").classList.add("hidden");
+      if(full){speak([1200,"Hotovo. Protažení po posilovně máš za sebou."]);}
+      show("finish");return;
+    }
     if(planksDone===0){show("home");renderHome();return;}
     recordDay(state.target,planksDone,full&&planksDone>=3);
     $("finishSum").textContent = full
@@ -895,8 +1005,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   }
 
   /* ---- ovládání ---- */
-  $("startBtn").addEventListener("click",function(){startWorkout(false);});
-  $("demoBtn").addEventListener("click",function(){startWorkout(true);});
+  $("startBtn").addEventListener("click",function(){startWorkout(false,false);});
+  $("gymBtn").addEventListener("click",function(){startWorkout(false,true);});
+  $("demoBtn").addEventListener("click",function(){startWorkout(true,false);});
   $("stopBtn").addEventListener("click",function(){endWorkout(false);});
   $("tMinus").addEventListener("click",function(){
     if(state.target>10){state.target-=5;state.okStreak=0;$("targetVal").textContent=state.target;save();}});
