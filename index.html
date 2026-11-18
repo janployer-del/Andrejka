@@ -257,7 +257,7 @@
       <tr><td>16 · Krk — úklony</td><td class="t">25 s</td></tr>
       <tr><td>17 · Palec rukou — levá</td><td class="t">55 s</td></tr>
       <tr><td>18 · Palec rukou — pravá</td><td class="t">55 s</td></tr>
-      <tr><td>19 · Palce vlastní silou</td><td class="t">30 s</td></tr>
+      <tr><td>19 · Palce — nácvik bez rukou</td><td class="t">30 s</td></tr>
     </table>
     <p>Před každým plankem máš deset vteřin na přesun. Po mostu se převaluješ ze zad,
     po bird-dogu už klečíš na čtyřech a jen se spustíš na předloktí — hlas ti pokaždé
@@ -429,10 +429,13 @@
     od nohy</b> a v tahu s ním hýbej nahoru a dolů (kloub se odlehčí), pak ho <b>ohni nahoru
     k holeni</b>, pak dolů ke chodidlu, pak ho <b>odtáhni do strany</b> od ostatních prstů
     a nakonec s ním zakruž na obě strany. Totéž druhá noha.</p>
-    <p>Úplně nakonec obě chodidla na zem a palce pracují samy, bez rukou: zvedni jen palce
-    a ostatní prsty drž dole, povol, pak obráceně — palce dole, ostatní prsty nahoru.
-    Dvakrát za sebou. Tohle je jediná část, kde palec hýbe sám sebou, a právě to z toho
-    dlouhodobě zůstane.</p>
+    <p>Úplně nakonec obě chodidla na zem a prsty pracují samy, bez rukou. Je to nácvik:
+    zvedni všechny prsty najednou, pak <b>polož jen palce</b> a ostatní nech nahoře. Znovu
+    zvedni všechny a tentokrát polož ostatní prsty, palce nech nahoře. Cesta shora je snazší
+    než zvedat prsty ze země jednotlivě — to přijde, až tohle půjde samo.</p>
+    <div class="tip"><b>Když to nejde:</b> je to otázka ovládání, ne síly, a učí se to
+    opakováním. Pomáhá dívat se na prsty. Doma si můžeš pomoct rukou — přidrž prsty, které
+    mají zůstat dole, a ty druhé zvedni samy.</div>
     <div class="tip"><b>Rozsah určuje tah, ne doraz.</b> Táhnout to má v palci a v plosce.
     Jakmile se ozve ostré píchnutí nahoře v kloubu, hned povol — tam kloub nechce a tlačit
     ho tam nepomůže.</div>
@@ -578,7 +581,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.11.0";
+  var VERSION="1.11.1";
   var VERSION_DATE="18. 11. 2026";
   var state={target:30, ready:10, level:1, side:20, lv:2, voice:true, okStreak:0, sessions:[]};
 
@@ -845,9 +848,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       {n:"Palec rukou — pravá",h:"Noha přes koleno. Palec vytáhnout, nahoru, dolů, do strany, zakroužit. Jen do tahu.",d:PAL,k:"stretch",
        c:fromStart([[12,"Nahoru k holeni, vydrž."],[24,"Dolů, vydrž."],[34,"Do strany, vydrž."],[44,"Zakruž."]]),
        v:"Vystřídej nohu. Pravý palec vytáhni a hýbej s ním nahoru a dolů."},
-      {n:"Palce vlastní silou",h:"Obě chodidla na zemi. Zvedat jen palce, pak jen ostatní prsty.",d:PAL2,k:"stretch",
-       c:fromStart([[8,"Povol. Teď obráceně — palce dole, ostatní prsty nahoru."],[16,"A znovu jen palce nahoru."],[24,"Povol."]]),
-       v:"Pusť nohu, obě chodidla na zem. Zvedni jen palce, ostatní prsty drž dole. Vydrž."}
+      /* nácvik: ze zvednutých prstů se pokládá — snazší než zvedat jednotlivě ze země */
+      {n:"Palce — nácvik",h:"Obě chodidla na zemi. Zvednout všechny prsty, položit jen palce. Znovu zvednout, položit ostatní.",d:PAL2,k:"stretch",
+       c:fromStart([[8,"Teď polož jen palce. Ostatní prsty drž nahoře."],[15,"Zvedni zase všechny."],[19,"A polož ostatní prsty, palce nech nahoře."],[26,"Povol."]]),
+       v:"Pusť nohu, obě chodidla na zem. Zvedni všechny prsty nahoru, paty zůstávají na zemi."}
     ];
     if(state.level>=2){
       /* přesun + prostřední plank nahradí boční: levý bok, přetočení, pravý bok */
