@@ -297,16 +297,29 @@
 
     <h3>Úrovně planku</h3>
     <p>Až ti výdrž přeroste 45 vteřin, přidávat další čas už moc nepřinese. Dál se
-    postupuje obtížností — aplikace ti to sama nabídne a čas vrátí na 30 s.</p>
+    postupuje obtížností — aplikace ti to sama nabídne.</p>
     <ul>
       <li><b>1 · Základní plank</b> — opora o předloktí, tělo v přímce.</li>
-      <li><b>2 · Se zvedáním paže</b> — střídavě odlep ruku na dvě tři vteřiny.
-      Musíš bránit rotaci pánve.</li>
-      <li><b>3 · Se zvedáním nohy</b> — totéž s nataženou nohou, o stupeň těžší.</li>
-      <li><b>4 · Dlouhá páka</b> — lokty posunuté před ramena. Brutální nárůst
+      <li><b>2 · Boční plank uprostřed</b> — prostřední plank nahradí boční, nejdřív levý
+      bok, pak pravý. První a třetí plank zůstávají rovné a jejich čas se nemění.</li>
+      <li><b>3 · Se zvedáním paže</b> — v prvním a třetím planku střídavě odlep ruku na dvě
+      tři vteřiny. Musíš bránit rotaci pánve. Čas se vrátí na 30 s.</li>
+      <li><b>4 · Se zvedáním nohy</b> — totéž s nataženou nohou, o stupeň těžší.</li>
+      <li><b>5 · Dlouhá páka</b> — lokty posunuté před ramena. Brutální nárůst
       obtížnosti bez jediné vteřiny navíc.</li>
     </ul>
-    <p>Úroveň jde kdykoli přepnout ručně na úvodní obrazovce.</p>
+    <p>Od úrovně 2 zůstává boční plank uprostřed i na vyšších úrovních. Úroveň jde kdykoli
+    přepnout ručně na úvodní obrazovce — nahoru i zpátky dolů.</p>
+
+    <h3>Boční plank</h3>
+    <p>Lehni si na bok a opři se o předloktí, <b>loket přesně pod ramenem</b>. Nohy natažené,
+    chodidla na sobě. Zvedni boky, až tělo tvoří přímku od hlavy po paty, a drž. Volnou ruku
+    dej v bok. Začíná se levým bokem, přetočení na pravý ohlásí hlas. Výchozí délka je
+    20 vteřin na každou stranu.</p>
+    <div class="tip"><b>Nejčastější chyba:</b> boky klesají k zemi nebo ujíždějí dozadu.
+    Tlač je nahoru a mírně dopředu, jako bys stál bokem u zdi.</div>
+    <div class="tip"><b>Když to nejde udržet:</b> pokrč spodní koleno a opři ho o zem.
+    Lehčí varianta, která posiluje totéž.</div>
 
     <h3>Most</h3>
     <p>Leh na zádech, chodidla na šířku pánve, <b>paty pod koleny</b>, ruce podél těla.
@@ -565,13 +578,14 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
 (function(){
   "use strict";
   var KEY="andrejka-v1";
-  var VERSION="1.10.0";
-  var VERSION_DATE="15. 10. 2026";
-  var state={target:30, ready:10, level:1, voice:true, okStreak:0, sessions:[]};
+  var VERSION="1.11.0";
+  var VERSION_DATE="18. 11. 2026";
+  var state={target:30, ready:10, level:1, side:20, lv:2, voice:true, okStreak:0, sessions:[]};
 
   /* úrovně planku — progres obtížností místo nekonečných vteřin */
   var LEVELS=[
     {n:"Základní plank", h:"Rovná záda, zpevněné břicho, nepropadat v bocích.", v:""},
+    {n:"Boční plank uprostřed", h:"", v:""},   /* od úrovně 2 je prostřední plank boční */
     {n:"Plank se zvedáním paže", h:"Střídavě odlepte ruku od země na dvě tři vteřiny.", v:"Zvedej střídavě paži."},
     {n:"Plank se zvedáním nohy", h:"Střídavě zvedněte nataženou nohu, pánev nesmí rotovat.", v:"Zvedej střídavě nohu."},
     {n:"Dlouhá páka", h:"Lokty posunuté před ramena. Nejtěžší varianta.", v:"Dlouhá páka."}
@@ -595,7 +609,10 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function fixState(){
     if(typeof state.ready!=="number"||state.ready<5||state.ready>20){state.ready=10;}
     if(typeof state.voice!=="boolean"){state.voice=true;}
+    /* starší uložený stav a zálohy číslovaly úrovně bez bočního planku */
+    if(state.lv!==2){if(typeof state.level==="number"&&state.level>=2){state.level++;}state.lv=2;}
     if(typeof state.level!=="number"||state.level<1||state.level>LEVELS.length){state.level=1;}
+    if(typeof state.side!=="number"||state.side<10||state.side>40){state.side=20;}
   }
   function save(){
     try{localStorage.setItem(KEY,JSON.stringify(state));}
@@ -801,8 +818,9 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   function buildPhases(){
     var T=demo?5:state.target,Y=demo?3:state.ready,R=demo?5:60-state.ready,K=demo?5:15,P=demo?3:10;
     var PID=demo?5:45,KOC=demo?5:45,ROT=demo?5:45,CHR=demo?3:15,NCK=demo?5:25,PAL=demo?5:55,PAL2=demo?5:30;
-    var L=lvl(),lh=state.level>1?(" "+L.h):"",lv=L.v?(" "+L.v):"";
-    return [
+    var S=demo?5:state.side,TW=demo?3:8;
+    var L=lvl(),lh=(state.level>1&&L.h)?(" "+L.h):"",lv=L.v?(" "+L.v):"";
+    var ph=[
       {n:"Příprava",h:"Položte telefon a zaujměte polohu planku.",d:P,k:"prep",v:"Připrav se do planku. Lokty pod rameny, tělo v přímce."},
       {n:"Plank 1/3",h:"Rovná záda, zpevněné břicho, nepropadat v bocích."+lh,d:T,k:"work",tip:"Propni kolena, vytáhni se za patama.",v:"První plank. Rovná záda, břicho zpevni."+lv},
       {n:"Most",h:"Leh na zádech, pomalu zvedat a spouštět pánev, nahoře stisknout hýždě.",d:R,k:"rest",c:mostCues,v:"Most. Leh na záda, paty pod kolena. Zvedej pánev pomalu a nahoře vždycky stiskni hýždě."},
@@ -831,6 +849,19 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
        c:fromStart([[8,"Povol. Teď obráceně — palce dole, ostatní prsty nahoru."],[16,"A znovu jen palce nahoru."],[24,"Povol."]]),
        v:"Pusť nohu, obě chodidla na zem. Zvedni jen palce, ostatní prsty drž dole. Vydrž."}
     ];
+    if(state.level>=2){
+      /* přesun + prostřední plank nahradí boční: levý bok, přetočení, pravý bok */
+      ph.splice(4,2,
+        {n:"Do polohy",h:"Otočte se na levý bok, opora o levé předloktí, loket pod ramenem.",d:Y,k:"ready",
+         v:"Otoč se na levý bok. Opři se o levé předloktí, loket pod ramenem, nohy natažené, chodidla na sobě."},
+        {n:"Boční plank — levý bok",h:"Boky nahoru, tělo v přímce od hlavy po paty.",d:S,k:"work",nc:true,
+         tip:"Boky drž nahoře, nepropadej. Dýchej.",v:"Boční plank. Zvedni boky, tělo v přímce od hlavy po paty."},
+        {n:"Přetočení",h:"Přetočte se na pravý bok, loket pod rameno.",d:TW,k:"ready",
+         v:"Přetoč se na pravý bok. Loket pod rameno."},
+        {n:"Boční plank — pravý bok",h:"Boky nahoru, volná ruka v bok, hrudník otevřený.",d:S,k:"work",
+         tip:"Volnou ruku v bok, hrudník otevřený. Vydrž.",v:"Pravý bok. Zvedni boky, tělo v přímce."});
+    }
+    return ph;
   }
   /* pokyny zadané od začátku fáze; záporné číslo = zbývající vteřiny */
   function fromStart(list){
@@ -954,7 +985,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     }
     $("horizonBar").style.width=((elapsedBefore+(p.d-left))/totalDur*100)+"%";
     if(left===0){
-      if(p.k==="work"){planksDone++;}
+      if(p.k==="work"&&!p.nc){planksDone++;}
       elapsedBefore+=p.d;pi++;
       if(pi>=phases.length){endWorkout(true);}else{enterPhase();}
     }
@@ -990,7 +1021,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     if(planksDone===0){show("home");renderHome();return;}
     recordDay(state.target,planksDone,full&&planksDone>=3);
     $("finishSum").textContent = full
-      ? "3× plank "+state.target+" s, most, vytáčení kolen, bird-dog, kobra, píďalka, kočka i protažení krku a palců. Série pokračuje."
+      ? (state.level>=2?("2× plank "+state.target+" s, boční plank "+state.side+" s na každou stranu"):("3× plank "+state.target+" s"))+", most, vytáčení kolen, bird-dog, kobra, píďalka, kočka i protažení krku a palců. Série pokračuje."
       : ("Uloženo: "+planksDone+" z 3 planků po "+state.target+" s. "
          +(planksDone>=STREAK_MIN?"Série pokračuje.":"Na udržení série chybí ještě jeden plank."));
     /* hlas na závěr: pochvala a série dní */
@@ -1055,6 +1086,7 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
   /* co aplikace navrhne po třech „Ano" — do 45 s vteřiny, pak vyšší úroveň */
   function nextStep(){
     if(state.target<45){return {kind:"time",val:state.target+5};}
+    if(state.level>=2&&state.side<30){return {kind:"side",val:state.side+5};}
     if(state.level<LEVELS.length){return {kind:"level",val:state.level+1};}
     if(state.target<60){return {kind:"time",val:state.target+5};}
     return null;
@@ -1067,6 +1099,13 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
       if(s.kind==="time"){
         $("suggestText").textContent="Tři kola v pohodě za sebou — čas přidat.";
         $("suggestBtn").textContent="Prodloužit na "+s.val+" s";
+      }else if(s.kind==="side"){
+        $("suggestText").textContent="Tři kola v pohodě za sebou — boční plank může být delší.";
+        $("suggestBtn").textContent="Boční plank "+s.val+" s na stranu";
+      }else if(s.val===2){
+        $("suggestText").textContent="Tři kola v pohodě za sebou. Delší plank už moc nepřidá — "
+          +"zkuste místo prostředního planku boční. Rovné planky zůstanou na "+state.target+" s.";
+        $("suggestBtn").textContent="Přejít na "+LEVELS[s.val-1].n;
       }else{
         $("suggestText").textContent="Tři kola v pohodě za sebou. Delší plank už moc nepřidá — "
           +"zkuste těžší variantu. Čas se vrátí na 30 s.";
@@ -1081,7 +1120,8 @@ var qrcode=function(){var t=function(t,r){var e=t,n=g[r],o=null,i=0,a=null,u=[],
     var s=nextStep();
     if(s){
       if(s.kind==="time"){state.target=s.val;}
-      else{state.level=s.val;state.target=30;}
+      else if(s.kind==="side"){state.side=s.val;}
+      else{state.level=s.val;if(s.val>=3){state.target=30;}}
     }
     state.okStreak=0;$("suggestBlock").classList.add("hidden");save();});
   $("vMinus").addEventListener("click",function(){
